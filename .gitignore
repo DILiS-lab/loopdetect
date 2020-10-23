@@ -1,6 +1,5 @@
 #Python packaging and docs stuff#
 #################################
-build/
 dist/
 docs/_build/
 pip.egg-info/

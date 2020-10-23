@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Example workflow with LoopDetect &#8212; LoopDetect 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to LoopDetect’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="example-workflow-with-loopdetect">
+<h1>Example workflow with LoopDetect<a class="headerlink" href="#example-workflow-with-loopdetect" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>LoopDetect is on PyPI and can be installed via pip in the command shell (you might have to use pip3 if using Python3).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install LoopDetect
+</pre></div>
+</div>
+<p>Within Python, import the module like this in order to use LoopDetect functions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">LoopDetect</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="in-brief-and-quick-start">
+<h2>In brief and quick start<a class="headerlink" href="#in-brief-and-quick-start" title="Permalink to this headline">¶</a></h2>
+<p>The package LoopDetect enables determining all feedback loops of
+an ordinary differential equation (ODE) system at user-defined values of
+the model parameters and of the modelled variables.</p>
+<p>The following calls within Python report (up to 10) feedback loops for an ODE system
+determined by a function (here the example function <cite>func_POSm4</cite> provided along with LoopDetect) at variable values <cite>s_star</cite> (here, these are all equal to 1). Additional arguments to the
+example function are supplied.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import LoopDetect and numpy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">LoopDetect</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="c1"># An example ODE system with function func_POSm4 is provided in</span>
+<span class="c1"># LoopDetect, it has 4 variables.</span>
+<span class="c1"># Variable values for the 4 variables (as tuple, cast into a list)</span>
+<span class="n">s_star</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
+<span class="c1"># Define further arguments of func_POSm4</span>
+<span class="n">klin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">knonlin</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1"># compute loops</span>
+<span class="n">res_tab</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops_vset</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_POSm4</span><span class="p">,</span><span class="n">vset</span><span class="o">=</span><span class="n">s_star</span><span class="p">,</span><span class="n">klin</span><span class="o">=</span><span class="n">klin</span><span class="p">,</span>
+                   <span class="n">knonlin</span><span class="o">=</span><span class="n">knonlin</span><span class="p">,</span><span class="n">max_num_loops</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># The loop list, a pandas dataframe, is accessed like this:</span>
+<span class="n">res_tab</span><span class="p">[</span><span class="s1">&#39;loop_rep&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The following describes how information in the output pandas dataframe
+relates to information on selected loops.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve only the second loop of the list.</span>
+<span class="n">res_tab</span><span class="p">[</span><span class="s1">&#39;loop_rep&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># It is a positive feedback loop (sign in the loop list equals +1)</span>
+<span class="c1"># of length 3 in that variable 2 (index 1) regulates variable 3</span>
+<span class="c1"># (index 2), variable 3 regulates variable 4 (index 3), and</span>
+<span class="c1"># variable 4 regulates variable 2.</span>
+<span class="c1"># This returns the corresponding signed Jacobian matrix for</span>
+<span class="c1"># the whole system.</span>
+<span class="n">res_tab</span><span class="p">[</span><span class="s1">&#39;jac_rep&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Ordinary differential equation (ODE) models are used frequently to
+mathematically represent biological systems. Feedback loops are important
+regulatory features of biological systems and can give rise to different
+dynamic behavior such as multistability for positive feedback loops or
+oscillations for negative feedback loops.</p>
+<p>The feedback loops in an ODE system can be detected with the help of its
+Jacobian matrix, the matrix of partial derivatives of the variables.
+It captures all interactions between the variables and gives rise to the
+interaction graph of the ODE model. In this graph, each modelled variable
+is a node and non-zero entries in the Jacobian matrix are (weighted)
+edges of the graph. Interactions can be positive or negative, according
+to the sign of the Jacobian matrix entry.</p>
+<p>Directed path detection in this graph is used to determine all feedback
+loops (in graphs also called cycles or circuits) of the system. They are
+marked by a set of directed interactions forming a chain in which only
+the first and the last node (variable) is the same. Thereby, self-loops
+(loops of length one) can also occur.</p>
+<p>LoopDetect allows for detection of all loops of the graph and also reports
+the sign of each loop, i.e. whether it is a positive feedback loop
+(the number of negative interactions is even) or a negative feedback loop
+(the number of negative interactions is uneven).
+The output is a table that captures the order of the variables forming
+the loop, their length and the sign of each loop.</p>
+<p>Jacobian determination in LoopDetect relies on the Python module <cite>numdifftools</cite>, and path
+finding in graphs uses algorithms supplied in the Python module <cite>networkx</cite>. The output loop lists rely on the pandas dataframe format.</p>
+</div>
+<div class="section" id="solving-the-ode-model-to-generate-variable-values-of-interest">
+<h2>Solving the ODE model to generate variable values of interest<a class="headerlink" href="#solving-the-ode-model-to-generate-variable-values-of-interest" title="Permalink to this headline">¶</a></h2>
+<p>Solving an ODE model can be performed with the <cite>odeint</cite> function from <cite>scipy.integrate</cite>.
+Note: You can skip this step if you already have a point of interest in state
+space, or if you want to use dummy values for the variables such as
+<cite>s_star = (1,2,3,4)</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import required modules</span>
+<span class="kn">import</span> <span class="nn">LoopDetect</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
+<span class="c1"># We use the example ODE system with function func_POSm4, positive</span>
+<span class="c1"># feedback chain model from [Baum et al., 2016], 4 variables.</span>
+<span class="c1"># It is supplied as function in LoopDetect.</span>
+<span class="c1"># Kinetic parameters of the model, further arguments to func_POSm4</span>
+<span class="n">klin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">165</span><span class="p">,</span><span class="mf">0.044</span><span class="p">,</span><span class="mf">0.27</span><span class="p">,</span><span class="mi">550</span><span class="p">,</span><span class="mi">5000</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mf">4.4</span><span class="p">,</span><span class="mf">5.1</span><span class="p">)</span>
+<span class="n">knonlin</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Define a helper function: odeint requires a function depending</span>
+<span class="c1"># only on the variables (first argument) and the time, t, but</span>
+<span class="c1"># func_POSm4 is independent from t and carries two more arguments</span>
+<span class="c1"># (klin, knonlin).</span>
+<span class="k">def</span> <span class="nf">func_POSm4_help</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_POSm4</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">klin</span><span class="p">,</span><span class="n">knonlin</span><span class="p">))</span>
+<span class="c1"># Solve the system using odeint at time points 0, 1, ..., 100,</span>
+<span class="c1"># initial vector: (1,2,3,4)</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">func_POSm4_help</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">11</span><span class="p">))</span>
+<span class="c1"># We set the last point of the numeric solution as point of interest</span>
+<span class="n">s_star</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>State variable values of interest could be steady state values,
+values at a specific point in time (e.g. after a stimulus) or even multiple sets
+of values (see section <em>Determining loops over multiple sets of variable values</em>).</p>
+</div>
+<div class="section" id="calculating-the-jacobian-matrix">
+<h2>Calculating the Jacobian matrix<a class="headerlink" href="#calculating-the-jacobian-matrix" title="Permalink to this headline">¶</a></h2>
+<p>The function <cite>Jacobian</cite> from the numdifftools package can be used to determine
+numerically the Jacobian matrix of an ODE system at a certain set of values
+for the variables, <cite>s_star</cite>.
+The approach is that of finite differences (with real step) or
+complex step approach, the latter of which is supposed to deliver more exact
+results. Please note that if the complex-step approach should be performed, the supplied function for that the Jacobian is to be determined has to deliver complex values and is only allowed to employ differentiable functions. Please check formats in the section <em>Example code for a possible input function</em>.</p>
+<p>The input function, in the example <cite>func_POSm4_comp</cite> (positive feedback chain model
+from [Baum et al., 2016] with complex values), defines the time derivatives of the modelled variables as a vector:  <span class="math notranslate nohighlight">\(f_i(S)=dS_i/dt\)</span>. Note that only those input arguments to the
+function that encode the modelled variables (and hence in whose direction the
+partial derivatives are taken) are allowed to be called <cite>x</cite>, they should always go as first argument to the function to derive.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the required packages. We assume they are loaded</span>
+<span class="c1"># also for the following steps of the workflow.</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numdifftools</span> <span class="k">as</span> <span class="nn">nd</span>
+<span class="kn">import</span> <span class="nn">LoopDetect</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="c1"># Define kinetic parameters of the model that are arguments of the</span>
+<span class="c1"># example function func_POSm4_comp</span>
+<span class="n">klin</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="mi">165</span><span class="p">,</span><span class="mf">0.044</span><span class="p">,</span><span class="mf">0.27</span><span class="p">,</span><span class="mi">550</span><span class="p">,</span><span class="mi">5000</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mf">4.4</span><span class="p">,</span><span class="mf">5.1</span><span class="p">)</span>
+<span class="n">knonlin</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Note that we defined s_star in the section above. It could also</span>
+<span class="c1"># be defined as simple tuple, s_star=(1,2,3,4).</span>
+<span class="n">j_matrix</span> <span class="o">=</span> <span class="n">nd</span><span class="o">.</span><span class="n">Jacobian</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_POSm4_comp</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">)(</span><span class="n">s_star</span><span class="p">,</span>
+                       <span class="n">klin</span><span class="o">=</span><span class="n">klin</span><span class="p">,</span><span class="n">knonlin</span><span class="o">=</span><span class="n">knonlin</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+<span class="n">signed_jacobian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">j_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The (i,j)th entry of the Jacobian matrix denotes the partial derivative
+of variable <span class="math notranslate nohighlight">\(S_i\)</span> with respect to variable <span class="math notranslate nohighlight">\(S_j\)</span>,
+<span class="math notranslate nohighlight">\(J_{ij}=\delta S_i/\delta S_j\)</span>, which is positive if <span class="math notranslate nohighlight">\(S_j\)</span> has a direct positive
+effect on <span class="math notranslate nohighlight">\(S_i\)</span>, negative if <span class="math notranslate nohighlight">\(S_j\)</span> has a direct negative effect on <span class="math notranslate nohighlight">\(S_i\)</span> and zero
+if <span class="math notranslate nohighlight">\(S_j\)</span> does not have a direct effect on <span class="math notranslate nohighlight">\(S_i\)</span>. For example, the entry in row 2,
+column 4, <span class="math notranslate nohighlight">\(J_{24}\)</span>, of the <cite>signed_jacobian</cite> matrix above (<cite>signed_jacobian[1,3]</cite>) is positive, meaning that
+in the underlying ODE model, variable 4 positively regulates variable 2.</p>
+</div>
+<div class="section" id="computing-all-feedback-loops">
+<h2>Computing all feedback loops<a class="headerlink" href="#computing-all-feedback-loops" title="Permalink to this headline">¶</a></h2>
+<p>The Jacobian matrix is used to compute feedback loops in the generated
+interaction graph. The default function for this is <cite>find_loops</cite>, in that
+strongly
+connected components are determined to reduce runtime. For smaller
+systems, the function <cite>find_loops_noscc</cite> skips this step and thus can be
+faster. The optional second input argument, <cite>max_num_loops</cite>, sets an upper
+limit to the number of detected and reported loops and thus can prevent overly
+long runtime (but also potentially not all loops are returned).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Determine the loop_list from Jacobian matrix j_matrix</span>
+<span class="n">loop_list</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">j_matrix</span><span class="p">)</span>
+<span class="c1"># The signed Jacobian matrix can be supplied instead,</span>
+<span class="c1"># delivering the same results.</span>
+<span class="n">loop_list</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">signed_jacobian</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output loop list is a pandas dataframe with one row for each detected loop.
+The column</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘loop’ contains the order of the variables that form the loop (as tuple);</p></li>
+<li><p>‘length’ contains the loop length (i.e. the number of variables involved);</p></li>
+<li><p>‘sign’ denotes whether the loop is negative, -1, or positive, 1.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="finding-certain-loops-or-edges-in-a-loop-list">
+<h2>Finding certain loops or edges in a loop list<a class="headerlink" href="#finding-certain-loops-or-edges-in-a-loop-list" title="Permalink to this headline">¶</a></h2>
+<p>The dataframe can be queried as usual for single loops or loops of a certain
+length or sign.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve second to fourth loop and its properties</span>
+<span class="n">loop_list</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">,]</span>
+<span class="c1"># In order to obtain only the vector of the order of species of a</span>
+<span class="c1"># loop, you have to call the first, the &#39;loop&#39;, column.</span>
+<span class="n">loop_list</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># Retrieve all loops of length 4</span>
+<span class="n">loop_list</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_list</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The LoopDetect function <cite>loop_summary</cite> provides a convenient report on total
+number of loops, subdivided by their lengths (columns) and signs (<cite>total</cite>, <cite>pos</cite>,
+<cite>neg</cite>) in a pandas dataframe.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lsum</span> <span class="o">=</span> <span class="n">loop_summary</span><span class="p">(</span><span class="n">loop_list</span><span class="p">)</span>
+<span class="c1">#retrieve the loop counts for all loops of length 3</span>
+<span class="n">lsum</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="c1">#loop counts subdivided by length for all negative feedback loops</span>
+<span class="n">lsum</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;neg&#39;</span><span class="p">]</span>
+<span class="c1">#retrieve all negative loops of length 1</span>
+<span class="n">lsum</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;neg&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>One can filter the loop list for loops containing specific variables, for
+example the one with index 2:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#define node (variable) of interest</span>
+<span class="n">noi</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1">#only return loops containung this variable</span>
+<span class="n">loop_list</span><span class="p">[[</span><span class="n">noi</span> <span class="ow">in</span> <span class="n">loop</span> <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">loop_list</span><span class="p">[</span><span class="s1">&#39;loop&#39;</span><span class="p">]]]</span>
+</pre></div>
+</div>
+<p>The LoopDetect function <cite>find_edge</cite> can be used to search a loop list for loops
+containing specific edges defined by the indices of the ingoing and outgoing
+nodes. This example returns the indices of all loops with a regulation of node
+with index 3 by node with index 2. These are only two here.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Obtain the indices of the loops with edge &#39;2 regulates 3&#39;</span>
+<span class="n">loop_edge_ind</span> <span class="o">=</span> <span class="n">find_edge</span><span class="p">(</span><span class="n">loop_list</span><span class="p">,</span><span class="n">source_node</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">target_node</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">loops_with_edge_2_to_3</span> <span class="o">=</span> <span class="n">loop_list</span><span class="p">[</span><span class="n">loop_edge_ind</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="writing-to-files-and-loading-loop-lists">
+<h2>Writing to files and loading loop lists<a class="headerlink" href="#writing-to-files-and-loading-loop-lists" title="Permalink to this headline">¶</a></h2>
+<p>For input/output procedures, all Python pandas functionalities can be used.
+Loop lists can be saved and loaded as Python objects using the pandas pickling functions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># this writes a Python-specific pickled file &#39;looplist_func_POSm4&#39;</span>
+<span class="n">loop_list</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="s1">&#39;looplist_func_POSm4&#39;</span><span class="p">)</span>
+<span class="c1"># this loads the loop list back from the file. We have to import</span>
+<span class="c1"># pandas in order to perform this.</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">ll1</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;looplist_func_POSm4&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Saving the loop list into tab-separated table files and loading them back is also possible with pandas table writing options.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># this saves the loop list as tab-separated file (without index)</span>
+<span class="n">loop_list</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;looplist_func_POSm4.tsv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># this reads the tsv back as loop list (with new indices)</span>
+<span class="c1"># pandas has to be imported (see above)</span>
+<span class="n">ll2</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;looplist_func_POSm4.tsv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="computing-feedback-loops-over-multiple-sets-of-variable-values-of-interest">
+<h2>Computing feedback loops over multiple sets of variable values of interest<a class="headerlink" href="#computing-feedback-loops-over-multiple-sets-of-variable-values-of-interest" title="Permalink to this headline">¶</a></h2>
+<p>In this example of a model of the bacterial cell cycle [Li et al., 2008],
+it is demonstrated how feedback loops can be determined over multiple sets of
+variable values. Here, it is focused on the solution of the ODE
+systems along the time axis (provided as data in the package).</p>
+<p>For convenience, the example ODE model function func_li08 is provided as a
+LoopDetect function,
+the kinetic parameters are defined within the function. The function returns
+a vector of the time derivatives (in the same order as the modelled variables
+in the arguments).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load solution over time as set of variable values of interest</span>
+<span class="n">sols</span><span class="o">=</span><span class="n">ld</span><span class="o">.</span><span class="n">load_li08_sol</span><span class="p">()</span>
+<span class="c1"># convert the solution to a list of tuples, remove the time column</span>
+<span class="n">sols_as_tuples</span><span class="o">=</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">sols</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">20</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sols</span><span class="p">))]</span>
+<span class="c1"># compute all different loop lists along the solution</span>
+<span class="c1"># attention - this may take several minutes due to computing the</span>
+<span class="c1"># Jacobians at each set of variable values</span>
+<span class="n">loop_results</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops_vset</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_li08</span><span class="p">,</span><span class="n">vset</span><span class="o">=</span><span class="n">sols_as_tuples</span><span class="p">,</span>
+        <span class="n">numdiff_method</span><span class="o">=</span><span class="s1">&#39;central&#39;</span><span class="p">,</span><span class="n">max_num_loops</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
+        <span class="n">compute_full_list</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The solutions of the example ODE model give rise to seven different loop lists
+that are saved as elements of the list <cite>loop_results[‘loop_rep’]</cite>.
+Here, an example of a resulting loop list is given.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># this is the 6th loop list</span>
+<span class="n">loop_list_1</span> <span class="o">=</span> <span class="n">loop_results</span><span class="p">[</span><span class="s1">&#39;loop_rep&#39;</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span>
+<span class="c1"># here we show only loops of length &gt; 1 (i.e. no self-loops)</span>
+<span class="n">loop_list_1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_list_1</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The entry <cite>loop_results[‘loop_rep_index’]</cite> is a vector of the same length as the
+number of different states at which the loops were determined
+(<cite>len(sols_as_tuples)</cite>), and returns which entry of <cite>loop_results[‘loop_rep’]</cite> belongs
+to each input state.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># determine which sets of variables belong to the 6th loop list</span>
+<span class="c1"># from above; yields a vector of the same size as sols_as_tuples</span>
+<span class="n">loop_results</span><span class="p">[</span><span class="s1">&#39;loop_rep_index&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">5</span>
+<span class="c1"># the indices can be retrieved using the numpy function `where`</span>
+<span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">loop_results</span><span class="p">[</span><span class="s1">&#39;loop_rep_index&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Similarly, <cite>loop_results[‘jac_rep’]</cite> and <cite>loop_results[‘jac_rep_index’]</cite> capture the different
+Jacobian matrices and for each input state which Jacobian belongs to it.</p>
+<p>Results of this analysis could be plotted along the solution and analyzed
+further to discover reasons of changing loops. Please note that in order
+to obtain the sample solution that can be loaded with <cite>ld.load_li08_sol()</cite>,
+also event functions
+are required; the solution cannot be retrieved from integrating
+<cite>func_li08</cite> alone. Please refer to the model’s publication [Li et al.,
+2008] for details.</p>
+</div>
+<div class="section" id="comparing-two-loop-lists">
+<h2>Comparing two loop lists<a class="headerlink" href="#comparing-two-loop-lists" title="Permalink to this headline">¶</a></h2>
+<p>LoopDetect provides a function for comparing the loops of two systems,
+<cite>compare_loop_list</cite>. For a meaningful comparison, the loop indices in
+the compared systems should point to the same variables. This could be the case
+when regulations change within one system between different sets of variables of
+interest (along a dynamic trajectory, at different steady states of the system),
+or when comparing different systems in which one or more regulations are altered
+(as in the below example the positive feedback chain model vs. the negative
+feedback chain model, [Baum et al., 2016]).</p>
+<p>We first compute the list of feedback loops for the first model (positive feedback chain model).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import LoopDetect and numdifftools</span>
+<span class="kn">import</span> <span class="nn">LoopDetect</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="kn">import</span> <span class="nn">numdifftools</span> <span class="k">as</span> <span class="nn">nd</span>
+<span class="c1"># Set kinetic parameters</span>
+<span class="n">klin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">165</span><span class="p">,</span><span class="mf">0.044</span><span class="p">,</span><span class="mf">0.27</span><span class="p">,</span><span class="mi">550</span><span class="p">,</span><span class="mi">5000</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mf">4.4</span><span class="p">,</span><span class="mf">5.1</span><span class="p">)</span>
+<span class="n">knonlin</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Compute the Jacobian matrix of the system at the state (1,1,1,1)</span>
+<span class="n">j_matrix</span> <span class="o">=</span> <span class="n">nd</span><span class="o">.</span><span class="n">Jacobian</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_POSm4_comp</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">)((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">klin</span><span class="p">,</span><span class="n">knonlin</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+<span class="c1"># Compute all loops for this Jacobian</span>
+<span class="n">loop_list_pos</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">j_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Second, we compute the list of feedback loops for a second model that is slightly altered with respect to the first model; in particular, it carries the same variables (negative feedback chain model).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The altered regulation affects two entries of the Jacobian matrix.</span>
+<span class="c1"># Parameter values and the set of variable values remain identical.</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">j_matrix_neg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">j_matrix</span><span class="p">)</span>
+<span class="n">j_matrix_neg</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">j_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="c1"># Compute the loop list for this Jacobian with altered regulation</span>
+<span class="n">loop_list_neg</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">j_matrix_neg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Now, we compare the loop lists with the dedicated LoopDetect function <cite>compare_loop_list</cite>. It returns a dictionary with different numpy arrays as entries that are described below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute comparison</span>
+<span class="n">loop_compare</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">compare_loops</span><span class="p">(</span><span class="n">loop_list_pos</span><span class="p">,</span><span class="n">loop_list_neg</span><span class="p">)</span>
+<span class="c1"># Only the four self-loops remain identical in both systems.</span>
+<span class="c1"># Their indices with respect to the first input list, loop_list_pos,</span>
+<span class="c1"># are saved in ind_a_id.</span>
+<span class="n">loop_list_pos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_a_id&#39;</span><span class="p">]]</span>
+<span class="c1"># ind_b_id saves the indices of the corresponding loops in the</span>
+<span class="c1"># second loop list, loop_list_neg.</span>
+<span class="n">loop_list_neg</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_b_id&#39;</span><span class="p">]]</span>
+<span class="c1"># Two loops are the same in both systems but they have switched</span>
+<span class="c1"># their signs. Their indices in the first loop list are saved in</span>
+<span class="c1"># ind_a_switch.</span>
+<span class="n">loop_list_pos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_a_switch&#39;</span><span class="p">]]</span>
+<span class="c1"># Their indices in the second loop list are saved in ind_b_switch.</span>
+<span class="n">loop_list_neg</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_b_switch&#39;</span><span class="p">]]</span>
+<span class="c1"># All loops in the positively regulated system do also occur in</span>
+<span class="c1"># the negatively regulated system, i.e. the entry ind_a_notin is</span>
+<span class="c1"># an empty array.</span>
+<span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_a_notin&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-for-a-possible-input-function">
+<h2>Example for a possible input function<a class="headerlink" href="#example-for-a-possible-input-function" title="Permalink to this headline">¶</a></h2>
+<p>We here show how a function that could be an input to <cite>find_loops_vset</cite> could look like.
+It is the function that is supplied with the LoopDetect package, <cite>func_POSm4</cite>, implementing
+a chain of length 4 with the last species feeding back on the conversion between the first and
+the second species.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func_POSm4</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">klin</span><span class="p">,</span><span class="n">knonlin</span><span class="p">):</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">dx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">klin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">klin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="nb">pow</span><span class="p">(</span><span class="n">knonlin</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">knonlin</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">+</span> <span class="n">klin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">klin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="nb">pow</span><span class="p">(</span><span class="n">knonlin</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">knonlin</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">klin</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">klin</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">klin</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">klin</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">klin</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">dx</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">klin</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">klin</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In order to use this function with complex-step derivative, we simply set the output type to a complex numpy array. This requires numpy and should be a sufficient procedure for most other functions as well.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Please note that the performed operations within the function should support complex numbers
+and be differentiable!</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>Baum K, Politi AZ, Kofahl B, Steuer R, Wolf J. Feedback, Mass
+Conservation and Reaction Kinetics Impact the Robustness of Cellular
+Oscillations. PLoS Comput Biol. 2016;12(12):e1005298.</p>
+<p>Li S, Brazhnik P, Sobral B, Tyson JJ. A Quantitative Study of the
+Division Cycle of Caulobacter crescentus Stalked Cells. Plos Comput Biol.
+2008;4(1):e9.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">LoopDetect</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example workflow with LoopDetect</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#in-brief-and-quick-start">In brief and quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solving-the-ode-model-to-generate-variable-values-of-interest">Solving the ODE model to generate variable values of interest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculating-the-jacobian-matrix">Calculating the Jacobian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computing-all-feedback-loops">Computing all feedback loops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finding-certain-loops-or-edges-in-a-loop-list">Finding certain loops or edges in a loop list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-to-files-and-loading-loop-lists">Writing to files and loading loop lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computing-feedback-loops-over-multiple-sets-of-variable-values-of-interest">Computing feedback loops over multiple sets of variable values of interest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#comparing-two-loop-lists">Comparing two loop lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-for-a-possible-input-function">Example for a possible input function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to LoopDetect’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Katharina Baum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/workflow.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
