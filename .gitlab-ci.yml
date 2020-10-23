@@ -1,7 +1,7 @@
 pages:
   stage: deploy
   script:
-  - cp docs/build public
+  - cp docs/build/html/. public
   artifacts:
     paths:
     - public
