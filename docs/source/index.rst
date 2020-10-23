@@ -21,8 +21,6 @@ an ordinary differential equation (ODE) system. The example workflow description
 .. automodule:: LoopDetect
 	:members:
 
-.. automodule:: func_li08
+.. automodule:: examples
 	:members:
 
-.. automodule:: func_POSm4
-	:members:

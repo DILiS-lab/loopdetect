@@ -419,65 +419,10 @@ contain a column named ‘loop’</p></li>
 </div>
 </dd></dl>
 
-<span class="target" id="module-func_li08"></span><dl class="py function">
-<dt id="func_li08.func_li08">
-<code class="sig-prename descclassname">func_li08.</code><code class="sig-name descname">func_li08</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#func_li08.func_li08" title="Permalink to this definition">¶</a></dt>
-<dd><p>example function: bacterial cell cycle [modelwtin(t,y), Li et al. 2008]</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p>x (numpy array, list, tuple): numerical of length 18, ordered input of the variable values</p></li>
-<li><p>t (float): time variable. Note that the function is independent from time.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A numpy array of length 18 containing the temporal derivative of the 18 variables.</p>
-</dd>
-<dt class="field-odd">Details</dt>
-<dd class="field-odd"><p>This is a function encoding an ordinary differential equation model
-that delivers the dynamics of the 
-Caulobacter cell cycle. Note that to obtain the solution as published, also events have to be 
-considered, i.e. certain conditions lead to a change in certain variable 
-values; see Li et al., 2008 for details.</p>
-</dd>
-<dt class="field-even">Reference</dt>
-<dd class="field-even"><p>Li S, Brazhnik P, Sobral B, Tyson JJ. A Quantitative Study of the 
-Division Cycle of Caulobacter crescentus Stalked Cells. Plos Comput Biol. 
-2008;4(1):e9.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="func_li08.load_li08_sol">
-<code class="sig-prename descclassname">func_li08.</code><code class="sig-name descname">load_li08_sol</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#func_li08.load_li08_sol" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads solutions for an example function of the bacterial cell cycle, Li et al. 2008, 
-as dataframe.</p>
-<dl class="field-list">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A pandas dataframe that provides the solution for 18 species over time (roughly 3 cycles, 
-up to 360 minutes, 634 time points in between). It contains the following columns:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>time, y1=x0, y2=x1,…, y18=x17</p></li>
-</ul>
-</div></blockquote>
-<p>All are numbers. Time is given in minutes.</p>
-</dd>
-<dt class="field-even">Reference</dt>
-<dd class="field-even"><p>Li S, Brazhnik P, Sobral B, Tyson JJ. A Quantitative Study of the 
-Division Cycle of Caulobacter crescentus Stalked Cells. Plos Comput Biol. 
-2008;4(1):e9.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<span class="target" id="module-func_POSm4"></span><dl class="py function">
-<dt id="func_POSm4.func_POSm4">
-<code class="sig-prename descclassname">func_POSm4.</code><code class="sig-name descname">func_POSm4</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">klin</span></em>, <em class="sig-param"><span class="n">knonlin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#func_POSm4.func_POSm4" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>example function: chain model with positive feedback regulation as from Baum et al., 2016</p>
-</div></blockquote>
+<span class="target" id="module-examples"></span><dl class="py function">
+<dt id="examples.func_POSm4">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">func_POSm4</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">klin</span></em>, <em class="sig-param"><span class="n">knonlin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#examples.func_POSm4" title="Permalink to this definition">¶</a></dt>
+<dd><p>example function: chain model with positive feedback regulation as from Baum et al., 2016</p>
 <p>::Parameters:</p>
 <blockquote>
 <div><ul class="simple">
@@ -507,8 +452,8 @@ Kinetics Impact the Robustness of Cellular Oscillationss. Plos Comput Biol.
 </dd></dl>
 
 <dl class="py function">
-<dt id="func_POSm4.func_POSm4_comp">
-<code class="sig-prename descclassname">func_POSm4.</code><code class="sig-name descname">func_POSm4_comp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">klin</span></em>, <em class="sig-param"><span class="n">knonlin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#func_POSm4.func_POSm4_comp" title="Permalink to this definition">¶</a></dt>
+<dt id="examples.func_POSm4_comp">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">func_POSm4_comp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">klin</span></em>, <em class="sig-param"><span class="n">knonlin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#examples.func_POSm4_comp" title="Permalink to this definition">¶</a></dt>
 <dd><p>example function: complex-valued chain model with positive feedback regulation as 
 from Baum et al., 2016</p>
 <dl class="field-list simple">
@@ -536,6 +481,59 @@ see Baum et al., 2016 for details.</p>
 <dd class="field-even"><p>Baum K, Politi AZ, Kofahl B, Steuer R, Wolf J: Feedback, Mass Conservation and Reaction 
 Kinetics Impact the Robustness of Cellular Oscillationss. Plos Comput Biol. 
 2016;12(12):e1005298.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="examples.func_li08">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">func_li08</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#examples.func_li08" title="Permalink to this definition">¶</a></dt>
+<dd><p>example function: bacterial cell cycle [modelwtin(t,y), Li et al. 2008]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>x (numpy array, list, tuple): numerical of length 18, ordered input of the variable values</p></li>
+<li><p>t (float): time variable. Note that the function is independent from time.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A numpy array of length 18 containing the temporal derivative of the 18 variables.</p>
+</dd>
+<dt class="field-odd">Details</dt>
+<dd class="field-odd"><p>This is a function encoding an ordinary differential equation model
+that delivers the dynamics of the 
+Caulobacter cell cycle. Note that to obtain the solution as published, also events have to be 
+considered, i.e. certain conditions lead to a change in certain variable 
+values; see Li et al., 2008 for details.</p>
+</dd>
+<dt class="field-even">Reference</dt>
+<dd class="field-even"><p>Li S, Brazhnik P, Sobral B, Tyson JJ. A Quantitative Study of the 
+Division Cycle of Caulobacter crescentus Stalked Cells. Plos Comput Biol. 
+2008;4(1):e9.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="examples.load_li08_sol">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">load_li08_sol</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#examples.load_li08_sol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads solutions for an example function of the bacterial cell cycle, Li et al. 2008, 
+as dataframe.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A pandas dataframe that provides the solution for 18 species over time (roughly 3 cycles, 
+up to 360 minutes, 634 time points in between). It contains the following columns:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>time, y1=x0, y2=x1,…, y18=x17</p></li>
+</ul>
+</div></blockquote>
+<p>All are numbers. Time is given in minutes.</p>
+</dd>
+<dt class="field-even">Reference</dt>
+<dd class="field-even"><p>Li S, Brazhnik P, Sobral B, Tyson JJ. A Quantitative Study of the 
+Division Cycle of Caulobacter crescentus Stalked Cells. Plos Comput Biol. 
+2008;4(1):e9.</p>
 </dd>
 </dl>
 </dd></dl>
