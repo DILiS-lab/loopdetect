@@ -1,9 +1,0 @@
-to do
-
-chekc setup.py
-check manifest
-create package
-create documentation with sphinx - html in folder public in order to work with the yml file
-create workflow description file
-create gitlab pages
-upload to gitlab
