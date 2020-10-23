@@ -35,7 +35,7 @@ LoopDetect is tested for Python 3, especially with Python version 3.8, but could
 
 ## Workflow and documentation
 
-Function documentation is available at PyPI or on the LoopDetect pages, [https://kabaum.gitlab.io/loopdetect/][https://kabaum.gitlab.io/loopdetect/]. There, you can also find a detailed [workflow description][https://kabaum.gitlab.io/loopdetect/workflow.html].
+Function documentation is available at PyPI or on the LoopDetect pages, https://kabaum.gitlab.io/loopdetect/. There, you can also find a detailed [workflow description](https://kabaum.gitlab.io/loopdetect/workflow.html).
 
 
 ## Licensing
