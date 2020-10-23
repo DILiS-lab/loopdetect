@@ -11,7 +11,7 @@ setup(
     name='loopdetect',
     version='0.1.0',    
     description='A Python package for feedback loop detection in ODE models',
-    #url='https://gitlab.com/kabaum/LoopDetect', #to adapt
+    url='https://gitlab.com/kabaum/loopdetect', 
     author='Katharina Baum',
     author_email='katharina.baum@hpi.de',
     license='GPL-3',
