@@ -1,6 +1,6 @@
-#LoopDetect - comprehensive detection of feedback loops in ODE models
+# LoopDetect - comprehensive detection of feedback loops in ODE models
 
-##Scope
+## Scope
 This Python package provides a handy framework to determine feedback loops (cycles, circuits) 
 in ordinary differential equation (ODE) models. 
 Feedback loops are paths from one node (variable) to itself without 
@@ -14,7 +14,7 @@ Graph-based algorithms from networkx are employed for path detection, numdifftoo
 computing the Jacobian and pandas dataframes are used as output format.
 
 
-##Installation
+## Installation
 
 Install the package with pip; within a terminal window, type
 
