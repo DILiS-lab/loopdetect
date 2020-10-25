@@ -6,7 +6,7 @@
 Welcome to LoopDetect's documentation!
 ======================================
 
-LoopDetect provides functions to determine all feedback loops of
+LoopDetect provides Python functions to determine all feedback loops of
 an ordinary differential equation (ODE) system. The example workflow description shows how to use the provided functions, the index provides an overview over all functions.
 
 .. toctree::
@@ -18,7 +18,7 @@ an ordinary differential equation (ODE) system. The example workflow description
 * :ref:`genindex`
 * :ref:`search`
 
-.. automodule:: LoopDetect
+.. automodule:: core
 	:members:
 
 .. automodule:: examples

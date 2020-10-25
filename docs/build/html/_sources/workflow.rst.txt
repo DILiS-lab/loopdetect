@@ -9,13 +9,19 @@ LoopDetect is on PyPI and can be installed via pip in the command shell (you mig
 
 .. code-block:: bash
 
-	pip install LoopDetect
+	pip install loopdetect
 
-Within Python, import the module like this in order to use LoopDetect functions:
+Within Python, import the Loopdetect's core module like this in order to use LoopDetect detection functions:
 
 .. code-block::
 
-	import LoopDetect
+	import loopdetect.core 
+
+If you want to use example functions, import the example module like this:
+
+.. code-block::
+
+	import loopdetect.examples 
 
 
 
@@ -32,18 +38,19 @@ example function are supplied.
 
 .. code-block:: python
 
-	# Import LoopDetect and numpy
+	# Import LoopDetect core and numpy
 	import numpy as np
-	import LoopDetect as ld
+	import loopdetect.core as ld
+	import loopdetect.examples as lde
 	# An example ODE system with function func_POSm4 is provided in 
-	# LoopDetect, it has 4 variables.
+	# loopdetect.examples, it has 4 variables.
 	# Variable values for the 4 variables (as tuple, cast into a list)
 	s_star = [(1,1,1,1)]
 	# Define further arguments of func_POSm4
 	klin = np.ones(1,8)
 	knonlin = (2.5,3)
 	# compute loops
-	res_tab = ld.find_loops_vset(ld.func_POSm4,vset=s_star,klin=klin,
+	res_tab = ld.find_loops_vset(lde.func_POSm4,vset=s_star,klin=klin,
                            knonlin=knonlin,max_num_loops=10)
 	# The loop list, a pandas dataframe, is accessed like this:
 	res_tab['loop_rep'][0]
@@ -109,11 +116,11 @@ space, or if you want to use dummy values for the variables such as
 .. code-block:: python
 	
 	# Import required modules 
-	import LoopDetect as ld
 	from scipy.integrate import odeint 
+	import loopdetect.examples as lde
 	# We use the example ODE system with function func_POSm4, positive 
 	# feedback chain model from [Baum et al., 2016], 4 variables.
-	# It is supplied as function in LoopDetect.
+	# It is supplied as function in the examples module in LoopDetect.
 	# Kinetic parameters of the model, further arguments to func_POSm4
 	klin = (165,0.044,0.27,550,5000,78,4.4,5.1)
 	knonlin = (0.3,2)
@@ -122,7 +129,7 @@ space, or if you want to use dummy values for the variables such as
 	# func_POSm4 is independent from t and carries two more arguments 
 	# (klin, knonlin).
 	def func_POSm4_help(x,t):
-		return(ld.func_POSm4(x,klin,knonlin))
+		return(lde.func_POSm4(x,klin,knonlin))
 	# Solve the system using odeint at time points 0, 1, ..., 100, 
 	# initial vector: (1,2,3,4)
 	sol = odeint(func_POSm4_help, y0 = (1,2,3,4), 
@@ -153,18 +160,17 @@ partial derivatives are taken) are allowed to be called `x`, they should always 
 
 .. code-block:: python
 	
-	# Import the required packages. We assume they are loaded 
-	# also for the following steps of the workflow.
+	# Import the required packages. 
 	import numpy as np
-	import numdifftools as nd
-	import LoopDetect as ld
+	import numdifftools
+	import loopdetect.examples as lde
 	# Define kinetic parameters of the model that are arguments of the 
-	# example function func_POSm4_comp
+	# example function func_POSm4_comp provided in LoopDetect
 	klin = tuple(165,0.044,0.27,550,5000,78,4.4,5.1)
 	knonlin = tuple(0.3,2)
 	# Note that we defined s_star in the section above. It could also 
 	# be defined as simple tuple, s_star=(1,2,3,4).
-	j_matrix = nd.Jacobian(ld.func_POSm4_comp,method="complex")(s_star,
+	j_matrix = numdifftools.Jacobian(lde.func_POSm4_comp,method="complex")(s_star,
                                klin=klin,knonlin=knonlin).real                          
 	signed_jacobian = np.sign(j_matrix)
 
@@ -191,7 +197,9 @@ limit to the number of detected and reported loops and thus can prevent overly
 long runtime (but also potentially not all loops are returned).
 
 .. code-block:: python
-	
+
+	# Import the required package
+	import loopdetect.core as ld
 	# Determine the loop_list from Jacobian matrix j_matrix
 	loop_list = ld.find_loops(j_matrix)
 	# The signed Jacobian matrix can be supplied instead, 
@@ -270,7 +278,7 @@ Loop lists can be saved and loaded as Python objects using the pandas pickling f
 	# this loads the loop list back from the file. We have to import 
 	# pandas in order to perform this.
 	import pandas as pd
-	ll1=pd.read_pickle('looplist_func_POSm4')
+	ll1 = pd.read_pickle('looplist_func_POSm4')
 
 Saving the loop list into tab-separated table files and loading them back is also possible with pandas table writing options.
 
@@ -280,7 +288,7 @@ Saving the loop list into tab-separated table files and loading them back is als
 	loop_list.to_csv('looplist_func_POSm4.tsv',sep="\t",index=False)
 	# this reads the tsv back as loop list (with new indices)
 	# pandas has to be imported (see above)
-	ll2=pd.read_csv('looplist_func_POSm4.tsv',sep="\t")
+	ll2 = pd.read_csv('looplist_func_POSm4.tsv',sep="\t")
 
 
 Computing feedback loops over multiple sets of variable values of interest
@@ -299,14 +307,17 @@ in the arguments).
 
 .. code-block:: python
 	
+	# import required packages
+	import loopdetect.core as ld
+	import loopdetect.examples as lde
 	# load solution over time as set of variable values of interest
-	sols=ld.load_li08_sol()
+	sols = lde.load_li08_sol()
 	# convert the solution to a list of tuples, remove the time column
-	sols_as_tuples=[tuple(sols.iloc[i,1:20]) for i in range(len(sols))]
+	sols_as_tuples = [tuple(sols.iloc[i,1:20]) for i in range(len(sols))]
 	# compute all different loop lists along the solution
 	# attention - this may take several minutes due to computing the 
 	# Jacobians at each set of variable values
-	loop_results = ld.find_loops_vset(ld.func_li08,vset=sols_as_tuples,
+	loop_results = ld.find_loops_vset(lde.func_li08,vset=sols_as_tuples,
 		numdiff_method='central',max_num_loops=100000,
 		compute_full_list=False,t=0)
 
@@ -362,14 +373,15 @@ We first compute the list of feedback loops for the first model (positive feedba
 
 .. code-block:: python
 	
-	# Import LoopDetect and numdifftools
-	import LoopDetect as ld
-	import numdifftools as nd
+	# import LoopDetect and numdifftools
+	import loopdetect.core as ld
+	import loopdetect.examples as lde
+	import numdifftools 
 	# Set kinetic parameters
 	klin = (165,0.044,0.27,550,5000,78,4.4,5.1)
 	knonlin = (0.3,2)
 	# Compute the Jacobian matrix of the system at the state (1,1,1,1)
-	j_matrix = nd.Jacobian(ld.func_POSm4_comp,
+	j_matrix = numdifftools.Jacobian(lde.func_POSm4_comp,
 		method="complex")((1,1,1,1),klin,knonlin).real
 	# Compute all loops for this Jacobian
 	loop_list_pos = ld.find_loops(j_matrix)
@@ -391,32 +403,32 @@ Now, we compare the loop lists with the dedicated LoopDetect function `compare_l
 .. code-block:: python
 	
 	# Compute comparison
-	loop_compare = ld.compare_loops(loop_list_pos,loop_list_neg)
+	loop_comparison = ld.compare_loops(loop_list_pos,loop_list_neg)
 	# Only the four self-loops remain identical in both systems. 
 	# Their indices with respect to the first input list, loop_list_pos, 
 	# are saved in ind_a_id.
-	loop_list_pos.loc[loop_compare['ind_a_id']]
+	loop_list_pos.loc[loop_comparison['ind_a_id']]
 	# ind_b_id saves the indices of the corresponding loops in the 
 	# second loop list, loop_list_neg.
-	loop_list_neg.loc[loop_compare['ind_b_id']]
+	loop_list_neg.loc[loop_comparison['ind_b_id']]
 	# Two loops are the same in both systems but they have switched 
 	# their signs. Their indices in the first loop list are saved in 
 	# ind_a_switch.
-	loop_list_pos.loc[loop_compare['ind_a_switch']]
+	loop_list_pos.loc[loop_comparison['ind_a_switch']]
 	# Their indices in the second loop list are saved in ind_b_switch. 
-	loop_list_neg.loc[loop_compare['ind_b_switch']]
-	# All loops in the positively regulated system do also occur in 
-	# the negatively regulated system, i.e. the entry ind_a_notin is 
-	# an empty array.
-	loop_compare['ind_a_notin']
+	loop_list_neg.loc[loop_comparison['ind_b_switch']]
+	# All loops in the first system do also occur in the second system, 
+	# i.e. the entry ind_a_notin that gives the indices of these loops
+	# within the first loop list is an empty array.
+	loop_comparison['ind_a_notin']
 
 
 
 Example for a possible input function
 -------------------------------------
 
-We here show how a function that could be an input to `find_loops_vset` could look like.
-It is the function that is supplied with the LoopDetect package, `func_POSm4`, implementing 
+We here show how a function that could be an input to `find_loops_vset`.
+It is the function that is supplied within the example module of the LoopDetect package, `func_POSm4`, implementing 
 a chain of length 4 with the last species feeding back on the conversion between the first and 
 the second species.
 

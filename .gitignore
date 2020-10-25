@@ -6,10 +6,14 @@ pip.egg-info/
 MANIFEST
 .tox
 *.egg
+*.egg-info
 *.py[cod]
 *~
 .coverage
 coverage.xml
+public/
+build/
+!docs/build
 
 # Compiled source #
 ###################

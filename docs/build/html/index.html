@@ -35,7 +35,7 @@
             
   <div class="section" id="welcome-to-loopdetect-s-documentation">
 <h1>Welcome to LoopDetect’s documentation!<a class="headerlink" href="#welcome-to-loopdetect-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>LoopDetect provides functions to determine all feedback loops of
+<p>LoopDetect provides Python functions to determine all feedback loops of
 an ordinary differential equation (ODE) system. The example workflow description shows how to use the provided functions, the index provides an overview over all functions.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
@@ -61,9 +61,9 @@ an ordinary differential equation (ODE) system. The example workflow description
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-<span class="target" id="module-LoopDetect"></span><dl class="py function">
-<dt id="LoopDetect.compare_loops">
-<code class="sig-prename descclassname">LoopDetect.</code><code class="sig-name descname">compare_loops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loop_list_a</span></em>, <em class="sig-param"><span class="n">loop_list_b</span></em>, <em class="sig-param"><span class="n">list_b_inds</span><span class="o">=</span><span class="default_value">'True'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LoopDetect.compare_loops" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-core"></span><dl class="py function">
+<dt id="core.compare_loops">
+<code class="sig-prename descclassname">core.</code><code class="sig-name descname">compare_loops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loop_list_a</span></em>, <em class="sig-param"><span class="n">loop_list_b</span></em>, <em class="sig-param"><span class="n">list_b_inds</span><span class="o">=</span><span class="default_value">'True'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.compare_loops" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares two loop lists to find identical loops. Same node indices are considered 
 to encode the same nodes in the compared loops. Sets of indices are returned.</p>
 <dl class="field-list simple">
@@ -102,16 +102,16 @@ to loops reported in ind_a_switch.</p></li>
 </dl>
 <p>Comparing loop lists from two systems of size 4 with coinciding nodes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#import the relevant packages </span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span>
+<span class="kn">import</span> <span class="nn">loopdetect</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="c1">#define the Jacobian matrix as numpy array</span>
 <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="c1">#compute the loop list</span>
-<span class="n">loop_list</span> <span class="o">=</span> <span class="n">LoopDetect</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
+<span class="n">loop_list</span> <span class="o">=</span> <span class="n">loopdetect</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
 <span class="c1">#define a slightly different Jacobian matrix</span>
 <span class="n">jac2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="c1">#compute the loop list</span>
-<span class="n">loop_list2</span> <span class="o">=</span> <span class="n">LoopDetect</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">jac2</span><span class="p">)</span>
+<span class="n">loop_list2</span> <span class="o">=</span> <span class="n">loopdetect</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">jac2</span><span class="p">)</span>
 <span class="c1">#compare the loop lists</span>
 <span class="n">loop_compare</span> <span class="o">=</span> <span class="n">compare_loops</span><span class="p">(</span><span class="n">loop_list</span><span class="p">,</span><span class="n">loop_list2</span><span class="p">)</span>
 <span class="c1">#get sublist of all loops that match</span>
@@ -123,8 +123,8 @@ to loops reported in ind_a_switch.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="LoopDetect.find_edge">
-<code class="sig-prename descclassname">LoopDetect.</code><code class="sig-name descname">find_edge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loop_list</span></em>, <em class="sig-param"><span class="n">source_node</span></em>, <em class="sig-param"><span class="n">target_node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LoopDetect.find_edge" title="Permalink to this definition">¶</a></dt>
+<dt id="core.find_edge">
+<code class="sig-prename descclassname">core.</code><code class="sig-name descname">find_edge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loop_list</span></em>, <em class="sig-param"><span class="n">source_node</span></em>, <em class="sig-param"><span class="n">target_node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.find_edge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reports which loops in a loop list contain a certain edge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -146,14 +146,14 @@ loop list. The values are True if the rows contain the edge, False if not.</p>
 </dl>
 <p>Finding all loops with an edge between species 0 and 1:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#import the relevant packages </span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span>
+<span class="kn">import</span> <span class="nn">loopdetect</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="c1">#define the Jacobian matrix as numpy array</span>
 <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="c1">#compute the loop list</span>
-<span class="n">loop_list</span> <span class="o">=</span> <span class="n">LoopDetect</span><span class="o">.</span><span class="n">find_loops_noscc</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
+<span class="n">loop_list</span> <span class="o">=</span> <span class="n">loopdetect</span><span class="o">.</span><span class="n">find_loops_noscc</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
 <span class="c1">#find loops containing the edge [0,1]</span>
-<span class="n">first_edge</span> <span class="o">=</span> <span class="n">LoopDetect</span><span class="o">.</span><span class="n">find_edge</span><span class="p">(</span><span class="n">loop_list</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">first_edge</span> <span class="o">=</span> <span class="n">loopdetect</span><span class="o">.</span><span class="n">find_edge</span><span class="p">(</span><span class="n">loop_list</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1">#return the loops containing the edge</span>
 <span class="n">loop_list</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">first_edge</span><span class="p">]</span>
 </pre></div>
@@ -161,8 +161,8 @@ loop list. The values are True if the rows contain the edge, False if not.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="LoopDetect.find_loops">
-<code class="sig-prename descclassname">LoopDetect.</code><code class="sig-name descname">find_loops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">jacobian</span></em>, <em class="sig-param"><span class="n">max_num_loops</span><span class="o">=</span><span class="default_value">100000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LoopDetect.find_loops" title="Permalink to this definition">¶</a></dt>
+<dt id="core.find_loops">
+<code class="sig-prename descclassname">core.</code><code class="sig-name descname">find_loops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">jacobian</span></em>, <em class="sig-param"><span class="n">max_num_loops</span><span class="o">=</span><span class="default_value">100000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.find_loops" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to determine all feedback loops in an ordinary differential equation (ODE)
 model given by its Jacobian matrix. Strongly connected components are determined 
 before cycle detection.</p>
@@ -190,19 +190,19 @@ generated by the Jacobian matrix.</p>
 </dl>
 <p>Define the Jacobian matrix of a four-variable system (jac) and compute all feedback loops:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#import the relevant packages </span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span>
+<span class="kn">import</span> <span class="nn">loopdetect</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="c1">#define the Jacobian matrix as numpy array</span>
 <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="c1">#compute the loop list</span>
-<span class="n">loop_list</span> <span class="o">=</span> <span class="n">LoopDetect</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
+<span class="n">loop_list</span> <span class="o">=</span> <span class="n">loopdetect</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
-<dt id="LoopDetect.find_loops_noscc">
-<code class="sig-prename descclassname">LoopDetect.</code><code class="sig-name descname">find_loops_noscc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">jacobian</span></em>, <em class="sig-param"><span class="n">max_num_loops</span><span class="o">=</span><span class="default_value">100000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LoopDetect.find_loops_noscc" title="Permalink to this definition">¶</a></dt>
+<dt id="core.find_loops_noscc">
+<code class="sig-prename descclassname">core.</code><code class="sig-name descname">find_loops_noscc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">jacobian</span></em>, <em class="sig-param"><span class="n">max_num_loops</span><span class="o">=</span><span class="default_value">100000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.find_loops_noscc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to determine all feedback loops in an ordinary differential equation (ODE)
 model given by its Jacobian matrix. No strongly connected components are determined 
 before cycle detection.</p>
@@ -233,19 +233,19 @@ generated by the Jacobian matrix.</p>
 </dl>
 <p>Define the Jacobian matrix of a four-variable system (jac) and compute all feedback loops:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#import the relevant packages </span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span>
+<span class="kn">import</span> <span class="nn">loopdetect</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="c1">#define the Jacobian matrix as numpy array</span>
 <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="c1">#compute the loop list</span>
-<span class="n">loop_list</span> <span class="o">=</span> <span class="n">LoopDetect</span><span class="o">.</span><span class="n">find_loops_noscc</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
+<span class="n">loop_list</span> <span class="o">=</span> <span class="n">loopdetect</span><span class="o">.</span><span class="n">find_loops_noscc</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
-<dt id="LoopDetect.find_loops_vset">
-<code class="sig-prename descclassname">LoopDetect.</code><code class="sig-name descname">find_loops_vset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fun</span></em>, <em class="sig-param"><span class="n">vset</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">numdiff_method</span><span class="o">=</span><span class="default_value">'central'</span></em>, <em class="sig-param"><span class="n">max_num_loops</span><span class="o">=</span><span class="default_value">100000</span></em>, <em class="sig-param"><span class="n">compute_full_list</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LoopDetect.find_loops_vset" title="Permalink to this definition">¶</a></dt>
+<dt id="core.find_loops_vset">
+<code class="sig-prename descclassname">core.</code><code class="sig-name descname">find_loops_vset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fun</span></em>, <em class="sig-param"><span class="n">vset</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">numdiff_method</span><span class="o">=</span><span class="default_value">'central'</span></em>, <em class="sig-param"><span class="n">max_num_loops</span><span class="o">=</span><span class="default_value">100000</span></em>, <em class="sig-param"><span class="n">compute_full_list</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.find_loops_vset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines loop lists for an ODE system given by a function
 and at multiple sets of variables. Loop lists are reported if signs of
 Jacobian matrix have changed.</p>
@@ -310,10 +310,10 @@ numdifftools.Jacobian</p>
 </dl>
 <p>Perform the loop analysis for a bacterial cell cycle system:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#import the relevant packages </span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="kn">import</span> <span class="nn">loopdetect</span> <span class="k">as</span> <span class="nn">ld</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="c1">#Note: the example function from the script func_li08.py is loaded together</span>
-<span class="c1">#with the other functions from LoopDetect</span>
+<span class="c1">#with the other functions from loopdetect</span>
 <span class="c1">#read in solutions from the data accompanying the package, file li08_solution.tsv</span>
 <span class="n">sols</span><span class="o">=</span><span class="n">ld</span><span class="o">.</span><span class="n">load_li08_sol</span><span class="p">()</span>
 <span class="n">sols_as_tuples</span><span class="o">=</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">sols</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">20</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sols</span><span class="p">))]</span> <span class="c1">#removing the time column</span>
@@ -325,7 +325,7 @@ numdifftools.Jacobian</p>
 </div>
 <p>Perform the loop analysis for a simpler system with a function with more input parameters and defined in complex numbers:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#The example function func_POSm4_comp() is that of a 4-variable system and is supplied</span>
-<span class="c1">#together with the other functions in LoopDetect.</span>
+<span class="c1">#together with the other functions in loopdetect.</span>
 <span class="c1">#define 5 possible variables (4-variable-system) in as list, as tuples</span>
 <span class="n">vset_def</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])]</span>
 <span class="c1">#we compute the loop lists at parameter values klin = [1,2,3,4,5,6,7,8] (in *args) </span>
@@ -339,8 +339,8 @@ numdifftools.Jacobian</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="LoopDetect.loop_summary">
-<code class="sig-prename descclassname">LoopDetect.</code><code class="sig-name descname">loop_summary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loop_list</span></em>, <em class="sig-param"><span class="n">column_val</span><span class="o">=</span><span class="default_value">'length'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LoopDetect.loop_summary" title="Permalink to this definition">¶</a></dt>
+<dt id="core.loop_summary">
+<code class="sig-prename descclassname">core.</code><code class="sig-name descname">loop_summary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loop_list</span></em>, <em class="sig-param"><span class="n">column_val</span><span class="o">=</span><span class="default_value">'length'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.loop_summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reports a summary of the loops in a loop list: numbers of positive (pos)
 loops or negative (neg) loops of a certain length</p>
 <dl class="field-list simple">
@@ -364,12 +364,12 @@ otherwise the sign of the loop are the columns</p></li>
 </dl>
 <p>Summarize a short loop list.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#import the relevant packages </span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span>
+<span class="kn">import</span> <span class="nn">loopdetect</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="c1">#define the Jacobian matrix as numpy array</span>
 <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="c1">#compute the loop list</span>
-<span class="n">loop_list</span> <span class="o">=</span> <span class="n">LoopDetect</span><span class="o">.</span><span class="n">find_loops_noscc</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
+<span class="n">loop_list</span> <span class="o">=</span> <span class="n">loopdetect</span><span class="o">.</span><span class="n">find_loops_noscc</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
 <span class="c1">#determine summary</span>
 <span class="n">sum_tab</span> <span class="o">=</span> <span class="n">loop_summary</span><span class="p">(</span><span class="n">loop_list</span><span class="p">)</span>
 </pre></div>
@@ -377,8 +377,8 @@ otherwise the sign of the loop are the columns</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="LoopDetect.sort_loop_index">
-<code class="sig-prename descclassname">LoopDetect.</code><code class="sig-name descname">sort_loop_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loop_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LoopDetect.sort_loop_index" title="Permalink to this definition">¶</a></dt>
+<dt id="core.sort_loop_index">
+<code class="sig-prename descclassname">core.</code><code class="sig-name descname">sort_loop_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loop_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.sort_loop_index" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>Sort all loops in a loop list such that they start with the node 
 with the smallest index. This is a helper function for comparing loop lists.</p>
@@ -405,7 +405,7 @@ contain a column named ‘loop’</p></li>
 </dl>
 <p>Create a new loop list with sorted entries (starting from the smalles node index).:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#import the relevant packages </span>
-        <span class="kn">import</span> <span class="nn">LoopDetect</span>
+        <span class="kn">import</span> <span class="nn">loopdetect</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
         <span class="c1">#define the Jacobian matrix as numpy array</span>
         <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
@@ -414,7 +414,7 @@ contain a column named ‘loop’</p></li>
         <span class="c1">#manipulate the second loop to start with a different entry than the smallest</span>
         <span class="n">loop_list</span><span class="o">.</span><span class="n">loop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="nb">tuple</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
         <span class="c1">#sort loop order</span>
-        <span class="n">sorted_loop_list</span> <span class="o">=</span> <span class="n">LoopDetect</span><span class="o">.</span><span class="n">sort_loop_index</span><span class="p">(</span><span class="n">loop_list</span><span class="p">)</span>
+        <span class="n">sorted_loop_list</span> <span class="o">=</span> <span class="n">loopdetect</span><span class="o">.</span><span class="n">sort_loop_index</span><span class="p">(</span><span class="n">loop_list</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

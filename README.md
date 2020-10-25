@@ -19,7 +19,7 @@ computing the Jacobian and pandas dataframes are used as output format.
 Install the package with pip; within a terminal window, type
 
 ```bash
-	pip install LoopDetect
+pip install LoopDetect
 ```
 
 Depending on your pip installation, you may be required to use pip3 as command instead.
@@ -27,7 +27,7 @@ Depending on your pip installation, you may be required to use pip3 as command i
 In order to use functions from LoopDetect within Python, call
 
 ```python
-	import LoopDetect
+import LoopDetect
 ```
 
 LoopDetect is tested for Python 3, especially with Python version 3.8, but could also run on lower versions.

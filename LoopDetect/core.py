@@ -1,8 +1,8 @@
 import networkx as nx
 import numpy as np
 import pandas as pd
-import itertools
 import numdifftools
+import itertools #this is a base package and does not need to go in the requirements
 
 
 
@@ -36,12 +36,12 @@ def find_loops(jacobian,max_num_loops=100000):
 	Define the Jacobian matrix of a four-variable system (jac) and compute all feedback loops::
 
 		#import the relevant packages 
-		import LoopDetect
+		import loopdetect
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 		#compute the loop list
-		loop_list = LoopDetect.find_loops(jac)
+		loop_list = loopdetect.find_loops(jac)
 	
 	"""
 	#only use sign of Jacobian
@@ -121,12 +121,12 @@ def find_loops_noscc(jacobian,max_num_loops=100000):
 	Define the Jacobian matrix of a four-variable system (jac) and compute all feedback loops::
 
 		#import the relevant packages 
-		import LoopDetect
+		import loopdetect
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 		#compute the loop list
-		loop_list = LoopDetect.find_loops_noscc(jac)
+		loop_list = loopdetect.find_loops_noscc(jac)
 	
 	"""
 	# wrapper for simple_cycles without detecting strongly connected components.
@@ -221,10 +221,10 @@ def find_loops_vset(fun,vset,*args,numdiff_method='central',max_num_loops=100000
 	Perform the loop analysis for a bacterial cell cycle system::
 
 		#import the relevant packages 
-		import LoopDetect as ld
+		import loopdetect as ld
 		import numpy as np
 		#Note: the example function from the script func_li08.py is loaded together
-		#with the other functions from LoopDetect
+		#with the other functions from loopdetect
 		#read in solutions from the data accompanying the package, file li08_solution.tsv
 		sols=ld.load_li08_sol()
 		sols_as_tuples=[tuple(sols.iloc[i,1:20]) for i in range(len(sols))] #removing the time column
@@ -236,7 +236,7 @@ def find_loops_vset(fun,vset,*args,numdiff_method='central',max_num_loops=100000
 	Perform the loop analysis for a simpler system with a function with more input parameters and defined in complex numbers::
 		
 		#The example function func_POSm4_comp() is that of a 4-variable system and is supplied
-		#together with the other functions in LoopDetect.
+		#together with the other functions in loopdetect.
 		#define 5 possible variables (4-variable-system) in as list, as tuples
 		vset_def = [f for f in zip([1,1,2,2,3],[0,1,2,3,4],[2,2,2,2,2],[3,0,1,2,3])]
 		#we compute the loop lists at parameter values klin = [1,2,3,4,5,6,7,8] (in *args) 
@@ -344,16 +344,16 @@ to encode the same nodes in the compared loops. Sets of indices are returned.
 Comparing loop lists from two systems of size 4 with coinciding nodes::
 
 	#import the relevant packages 
-	import LoopDetect
+	import loopdetect
 	import numpy as np
 	#define the Jacobian matrix as numpy array
 	jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 	#compute the loop list
-	loop_list = LoopDetect.find_loops(jac)
+	loop_list = loopdetect.find_loops(jac)
 	#define a slightly different Jacobian matrix
 	jac2 = np.array([[-1,0,0,0],[1,-1,0,-1],[0,1,1,0],[0,0,1,-1]])
 	#compute the loop list
-	loop_list2 = LoopDetect.find_loops(jac2)
+	loop_list2 = loopdetect.find_loops(jac2)
 	#compare the loop lists
 	loop_compare = compare_loops(loop_list,loop_list2)
 	#get sublist of all loops that match
@@ -418,14 +418,14 @@ def find_edge(loop_list,source_node,target_node):
 	Finding all loops with an edge between species 0 and 1::
 
 		#import the relevant packages 
-		import LoopDetect
+		import loopdetect
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 		#compute the loop list
-		loop_list = LoopDetect.find_loops_noscc(jac)
+		loop_list = loopdetect.find_loops_noscc(jac)
 		#find loops containing the edge [0,1]
-		first_edge = LoopDetect.find_edge(loop_list,0,1)
+		first_edge = loopdetect.find_edge(loop_list,0,1)
 		#return the loops containing the edge
 		loop_list.iloc[first_edge]
 	"""
@@ -475,7 +475,7 @@ def sort_loop_index(loop_list):
     Create a new loop list with sorted entries (starting from the smalles node index).::
 
     	#import the relevant packages 
-		import LoopDetect
+		import loopdetect
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
@@ -484,7 +484,7 @@ def sort_loop_index(loop_list):
 		#manipulate the second loop to start with a different entry than the smallest
 		loop_list.loop[1]=tuple([2,3,1,3])
 		#sort loop order
-		sorted_loop_list = LoopDetect.sort_loop_index(loop_list)
+		sorted_loop_list = loopdetect.sort_loop_index(loop_list)
     """ 
 	sorted_loops = pd.DataFrame(zip([listin[list(listin).index(min(listin)):len(listin)]+
 		listin[1:list(listin).index(min(listin))+1] if len(listin)>2 
@@ -519,12 +519,12 @@ def loop_summary(loop_list,column_val='length'):
 	Summarize a short loop list.::
 
 		#import the relevant packages 
-		import LoopDetect
+		import loopdetect
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 		#compute the loop list
-		loop_list = LoopDetect.find_loops_noscc(jac)
+		loop_list = loopdetect.find_loops_noscc(jac)
 		#determine summary
 		sum_tab = loop_summary(loop_list)
 	"""

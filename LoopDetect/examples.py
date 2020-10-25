@@ -1,5 +1,6 @@
 import pkg_resources
 import numpy as np
+import pandas as pd
 
 def func_li08(x,t):
     '''example function: bacterial cell cycle [modelwtin(t,y), Li et al. 2008]
@@ -161,7 +162,7 @@ def load_li08_sol():
         2008;4(1):e9.
 
     """
-    stream = pkg_resources.resource_stream(__name__, 'data/li08_solution.tsv')
+    stream = pkg_resources.resource_stream('loopdetect', 'data/li08_solution.tsv')
     return pd.read_csv(stream, sep='\t', encoding='latin-1')
 
 

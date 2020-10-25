@@ -1,3 +1,2 @@
 include README.md
-include docs/*.txt
-include data/li08_solution.tsv
+include loopdetect/data/li08_solution.tsv

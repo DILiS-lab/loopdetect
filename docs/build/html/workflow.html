@@ -38,11 +38,15 @@
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>LoopDetect is on PyPI and can be installed via pip in the command shell (you might have to use pip3 if using Python3).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install LoopDetect
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install loopdetect
 </pre></div>
 </div>
-<p>Within Python, import the module like this in order to use LoopDetect functions:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">LoopDetect</span>
+<p>Within Python, import the Loopdetect’s core module like this in order to use LoopDetect detection functions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">loopdetect.core</span>
+</pre></div>
+</div>
+<p>If you want to use example functions, import the example module like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">loopdetect.examples</span>
 </pre></div>
 </div>
 </div>
@@ -54,18 +58,19 @@ the model parameters and of the modelled variables.</p>
 <p>The following calls within Python report (up to 10) feedback loops for an ODE system
 determined by a function (here the example function <cite>func_POSm4</cite> provided along with LoopDetect) at variable values <cite>s_star</cite> (here, these are all equal to 1). Additional arguments to the
 example function are supplied.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import LoopDetect and numpy</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import LoopDetect core and numpy</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="kn">import</span> <span class="nn">loopdetect.core</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="kn">import</span> <span class="nn">loopdetect.examples</span> <span class="k">as</span> <span class="nn">lde</span>
 <span class="c1"># An example ODE system with function func_POSm4 is provided in</span>
-<span class="c1"># LoopDetect, it has 4 variables.</span>
+<span class="c1"># loopdetect.examples, it has 4 variables.</span>
 <span class="c1"># Variable values for the 4 variables (as tuple, cast into a list)</span>
 <span class="n">s_star</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
 <span class="c1"># Define further arguments of func_POSm4</span>
 <span class="n">klin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">knonlin</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 <span class="c1"># compute loops</span>
-<span class="n">res_tab</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops_vset</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_POSm4</span><span class="p">,</span><span class="n">vset</span><span class="o">=</span><span class="n">s_star</span><span class="p">,</span><span class="n">klin</span><span class="o">=</span><span class="n">klin</span><span class="p">,</span>
+<span class="n">res_tab</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops_vset</span><span class="p">(</span><span class="n">lde</span><span class="o">.</span><span class="n">func_POSm4</span><span class="p">,</span><span class="n">vset</span><span class="o">=</span><span class="n">s_star</span><span class="p">,</span><span class="n">klin</span><span class="o">=</span><span class="n">klin</span><span class="p">,</span>
                    <span class="n">knonlin</span><span class="o">=</span><span class="n">knonlin</span><span class="p">,</span><span class="n">max_num_loops</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="c1"># The loop list, a pandas dataframe, is accessed like this:</span>
 <span class="n">res_tab</span><span class="p">[</span><span class="s1">&#39;loop_rep&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -120,11 +125,11 @@ Note: You can skip this step if you already have a point of interest in state
 space, or if you want to use dummy values for the variables such as
 <cite>s_star = (1,2,3,4)</cite>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import required modules</span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span> <span class="k">as</span> <span class="nn">ld</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
+<span class="kn">import</span> <span class="nn">loopdetect.examples</span> <span class="k">as</span> <span class="nn">lde</span>
 <span class="c1"># We use the example ODE system with function func_POSm4, positive</span>
 <span class="c1"># feedback chain model from [Baum et al., 2016], 4 variables.</span>
-<span class="c1"># It is supplied as function in LoopDetect.</span>
+<span class="c1"># It is supplied as function in the examples module in LoopDetect.</span>
 <span class="c1"># Kinetic parameters of the model, further arguments to func_POSm4</span>
 <span class="n">klin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">165</span><span class="p">,</span><span class="mf">0.044</span><span class="p">,</span><span class="mf">0.27</span><span class="p">,</span><span class="mi">550</span><span class="p">,</span><span class="mi">5000</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mf">4.4</span><span class="p">,</span><span class="mf">5.1</span><span class="p">)</span>
 <span class="n">knonlin</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
@@ -133,7 +138,7 @@ space, or if you want to use dummy values for the variables such as
 <span class="c1"># func_POSm4 is independent from t and carries two more arguments</span>
 <span class="c1"># (klin, knonlin).</span>
 <span class="k">def</span> <span class="nf">func_POSm4_help</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
-        <span class="k">return</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_POSm4</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">klin</span><span class="p">,</span><span class="n">knonlin</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">lde</span><span class="o">.</span><span class="n">func_POSm4</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">klin</span><span class="p">,</span><span class="n">knonlin</span><span class="p">))</span>
 <span class="c1"># Solve the system using odeint at time points 0, 1, ..., 100,</span>
 <span class="c1"># initial vector: (1,2,3,4)</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">func_POSm4_help</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span>
@@ -158,18 +163,17 @@ results. Please note that if the complex-step approach should be performed, the 
 from [Baum et al., 2016] with complex values), defines the time derivatives of the modelled variables as a vector:  <span class="math notranslate nohighlight">\(f_i(S)=dS_i/dt\)</span>. Note that only those input arguments to the
 function that encode the modelled variables (and hence in whose direction the
 partial derivatives are taken) are allowed to be called <cite>x</cite>, they should always go as first argument to the function to derive.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the required packages. We assume they are loaded</span>
-<span class="c1"># also for the following steps of the workflow.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the required packages.</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">numdifftools</span> <span class="k">as</span> <span class="nn">nd</span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="kn">import</span> <span class="nn">numdifftools</span>
+<span class="kn">import</span> <span class="nn">loopdetect.examples</span> <span class="k">as</span> <span class="nn">lde</span>
 <span class="c1"># Define kinetic parameters of the model that are arguments of the</span>
-<span class="c1"># example function func_POSm4_comp</span>
+<span class="c1"># example function func_POSm4_comp provided in LoopDetect</span>
 <span class="n">klin</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="mi">165</span><span class="p">,</span><span class="mf">0.044</span><span class="p">,</span><span class="mf">0.27</span><span class="p">,</span><span class="mi">550</span><span class="p">,</span><span class="mi">5000</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mf">4.4</span><span class="p">,</span><span class="mf">5.1</span><span class="p">)</span>
 <span class="n">knonlin</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 <span class="c1"># Note that we defined s_star in the section above. It could also</span>
 <span class="c1"># be defined as simple tuple, s_star=(1,2,3,4).</span>
-<span class="n">j_matrix</span> <span class="o">=</span> <span class="n">nd</span><span class="o">.</span><span class="n">Jacobian</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_POSm4_comp</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">)(</span><span class="n">s_star</span><span class="p">,</span>
+<span class="n">j_matrix</span> <span class="o">=</span> <span class="n">numdifftools</span><span class="o">.</span><span class="n">Jacobian</span><span class="p">(</span><span class="n">lde</span><span class="o">.</span><span class="n">func_POSm4_comp</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">)(</span><span class="n">s_star</span><span class="p">,</span>
                        <span class="n">klin</span><span class="o">=</span><span class="n">klin</span><span class="p">,</span><span class="n">knonlin</span><span class="o">=</span><span class="n">knonlin</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
 <span class="n">signed_jacobian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">j_matrix</span><span class="p">)</span>
 </pre></div>
@@ -192,7 +196,9 @@ systems, the function <cite>find_loops_noscc</cite> skips this step and thus can
 faster. The optional second input argument, <cite>max_num_loops</cite>, sets an upper
 limit to the number of detected and reported loops and thus can prevent overly
 long runtime (but also potentially not all loops are returned).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Determine the loop_list from Jacobian matrix j_matrix</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the required package</span>
+<span class="kn">import</span> <span class="nn">loopdetect.core</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="c1"># Determine the loop_list from Jacobian matrix j_matrix</span>
 <span class="n">loop_list</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">j_matrix</span><span class="p">)</span>
 <span class="c1"># The signed Jacobian matrix can be supplied instead,</span>
 <span class="c1"># delivering the same results.</span>
@@ -261,7 +267,7 @@ Loop lists can be saved and loaded as Python objects using the pandas pickling f
 <span class="c1"># this loads the loop list back from the file. We have to import</span>
 <span class="c1"># pandas in order to perform this.</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">ll1</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;looplist_func_POSm4&#39;</span><span class="p">)</span>
+<span class="n">ll1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;looplist_func_POSm4&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Saving the loop list into tab-separated table files and loading them back is also possible with pandas table writing options.</p>
@@ -269,7 +275,7 @@ Loop lists can be saved and loaded as Python objects using the pandas pickling f
 <span class="n">loop_list</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;looplist_func_POSm4.tsv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="c1"># this reads the tsv back as loop list (with new indices)</span>
 <span class="c1"># pandas has to be imported (see above)</span>
-<span class="n">ll2</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;looplist_func_POSm4.tsv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ll2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;looplist_func_POSm4.tsv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -284,14 +290,17 @@ LoopDetect function,
 the kinetic parameters are defined within the function. The function returns
 a vector of the time derivatives (in the same order as the modelled variables
 in the arguments).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load solution over time as set of variable values of interest</span>
-<span class="n">sols</span><span class="o">=</span><span class="n">ld</span><span class="o">.</span><span class="n">load_li08_sol</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import required packages</span>
+<span class="kn">import</span> <span class="nn">loopdetect.core</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="kn">import</span> <span class="nn">loopdetect.examples</span> <span class="k">as</span> <span class="nn">lde</span>
+<span class="c1"># load solution over time as set of variable values of interest</span>
+<span class="n">sols</span> <span class="o">=</span> <span class="n">lde</span><span class="o">.</span><span class="n">load_li08_sol</span><span class="p">()</span>
 <span class="c1"># convert the solution to a list of tuples, remove the time column</span>
-<span class="n">sols_as_tuples</span><span class="o">=</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">sols</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">20</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sols</span><span class="p">))]</span>
+<span class="n">sols_as_tuples</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">sols</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">20</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sols</span><span class="p">))]</span>
 <span class="c1"># compute all different loop lists along the solution</span>
 <span class="c1"># attention - this may take several minutes due to computing the</span>
 <span class="c1"># Jacobians at each set of variable values</span>
-<span class="n">loop_results</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops_vset</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_li08</span><span class="p">,</span><span class="n">vset</span><span class="o">=</span><span class="n">sols_as_tuples</span><span class="p">,</span>
+<span class="n">loop_results</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops_vset</span><span class="p">(</span><span class="n">lde</span><span class="o">.</span><span class="n">func_li08</span><span class="p">,</span><span class="n">vset</span><span class="o">=</span><span class="n">sols_as_tuples</span><span class="p">,</span>
         <span class="n">numdiff_method</span><span class="o">=</span><span class="s1">&#39;central&#39;</span><span class="p">,</span><span class="n">max_num_loops</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
         <span class="n">compute_full_list</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
@@ -337,14 +346,15 @@ or when comparing different systems in which one or more regulations are altered
 (as in the below example the positive feedback chain model vs. the negative
 feedback chain model, [Baum et al., 2016]).</p>
 <p>We first compute the list of feedback loops for the first model (positive feedback chain model).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import LoopDetect and numdifftools</span>
-<span class="kn">import</span> <span class="nn">LoopDetect</span> <span class="k">as</span> <span class="nn">ld</span>
-<span class="kn">import</span> <span class="nn">numdifftools</span> <span class="k">as</span> <span class="nn">nd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import LoopDetect and numdifftools</span>
+<span class="kn">import</span> <span class="nn">loopdetect.core</span> <span class="k">as</span> <span class="nn">ld</span>
+<span class="kn">import</span> <span class="nn">loopdetect.examples</span> <span class="k">as</span> <span class="nn">lde</span>
+<span class="kn">import</span> <span class="nn">numdifftools</span>
 <span class="c1"># Set kinetic parameters</span>
 <span class="n">klin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">165</span><span class="p">,</span><span class="mf">0.044</span><span class="p">,</span><span class="mf">0.27</span><span class="p">,</span><span class="mi">550</span><span class="p">,</span><span class="mi">5000</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mf">4.4</span><span class="p">,</span><span class="mf">5.1</span><span class="p">)</span>
 <span class="n">knonlin</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 <span class="c1"># Compute the Jacobian matrix of the system at the state (1,1,1,1)</span>
-<span class="n">j_matrix</span> <span class="o">=</span> <span class="n">nd</span><span class="o">.</span><span class="n">Jacobian</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">func_POSm4_comp</span><span class="p">,</span>
+<span class="n">j_matrix</span> <span class="o">=</span> <span class="n">numdifftools</span><span class="o">.</span><span class="n">Jacobian</span><span class="p">(</span><span class="n">lde</span><span class="o">.</span><span class="n">func_POSm4_comp</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">)((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">klin</span><span class="p">,</span><span class="n">knonlin</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
 <span class="c1"># Compute all loops for this Jacobian</span>
 <span class="n">loop_list_pos</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">find_loops</span><span class="p">(</span><span class="n">j_matrix</span><span class="p">)</span>
@@ -362,31 +372,31 @@ feedback chain model, [Baum et al., 2016]).</p>
 </div>
 <p>Now, we compare the loop lists with the dedicated LoopDetect function <cite>compare_loop_list</cite>. It returns a dictionary with different numpy arrays as entries that are described below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute comparison</span>
-<span class="n">loop_compare</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">compare_loops</span><span class="p">(</span><span class="n">loop_list_pos</span><span class="p">,</span><span class="n">loop_list_neg</span><span class="p">)</span>
+<span class="n">loop_comparison</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">compare_loops</span><span class="p">(</span><span class="n">loop_list_pos</span><span class="p">,</span><span class="n">loop_list_neg</span><span class="p">)</span>
 <span class="c1"># Only the four self-loops remain identical in both systems.</span>
 <span class="c1"># Their indices with respect to the first input list, loop_list_pos,</span>
 <span class="c1"># are saved in ind_a_id.</span>
-<span class="n">loop_list_pos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_a_id&#39;</span><span class="p">]]</span>
+<span class="n">loop_list_pos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_comparison</span><span class="p">[</span><span class="s1">&#39;ind_a_id&#39;</span><span class="p">]]</span>
 <span class="c1"># ind_b_id saves the indices of the corresponding loops in the</span>
 <span class="c1"># second loop list, loop_list_neg.</span>
-<span class="n">loop_list_neg</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_b_id&#39;</span><span class="p">]]</span>
+<span class="n">loop_list_neg</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_comparison</span><span class="p">[</span><span class="s1">&#39;ind_b_id&#39;</span><span class="p">]]</span>
 <span class="c1"># Two loops are the same in both systems but they have switched</span>
 <span class="c1"># their signs. Their indices in the first loop list are saved in</span>
 <span class="c1"># ind_a_switch.</span>
-<span class="n">loop_list_pos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_a_switch&#39;</span><span class="p">]]</span>
+<span class="n">loop_list_pos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_comparison</span><span class="p">[</span><span class="s1">&#39;ind_a_switch&#39;</span><span class="p">]]</span>
 <span class="c1"># Their indices in the second loop list are saved in ind_b_switch.</span>
-<span class="n">loop_list_neg</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_b_switch&#39;</span><span class="p">]]</span>
-<span class="c1"># All loops in the positively regulated system do also occur in</span>
-<span class="c1"># the negatively regulated system, i.e. the entry ind_a_notin is</span>
-<span class="c1"># an empty array.</span>
-<span class="n">loop_compare</span><span class="p">[</span><span class="s1">&#39;ind_a_notin&#39;</span><span class="p">]</span>
+<span class="n">loop_list_neg</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loop_comparison</span><span class="p">[</span><span class="s1">&#39;ind_b_switch&#39;</span><span class="p">]]</span>
+<span class="c1"># All loops in the first system do also occur in the second system,</span>
+<span class="c1"># i.e. the entry ind_a_notin that gives the indices of these loops</span>
+<span class="c1"># within the first loop list is an empty array.</span>
+<span class="n">loop_comparison</span><span class="p">[</span><span class="s1">&#39;ind_a_notin&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="example-for-a-possible-input-function">
 <h2>Example for a possible input function<a class="headerlink" href="#example-for-a-possible-input-function" title="Permalink to this headline">¶</a></h2>
-<p>We here show how a function that could be an input to <cite>find_loops_vset</cite> could look like.
-It is the function that is supplied with the LoopDetect package, <cite>func_POSm4</cite>, implementing
+<p>We here show how a function that could be an input to <cite>find_loops_vset</cite>.
+It is the function that is supplied within the example module of the LoopDetect package, <cite>func_POSm4</cite>, implementing
 a chain of length 4 with the last species feeding back on the conversion between the first and
 the second species.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func_POSm4</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">klin</span><span class="p">,</span><span class="n">knonlin</span><span class="p">):</span>
