@@ -36,12 +36,12 @@ def find_loops(jacobian,max_num_loops=100000):
 	Define the Jacobian matrix of a four-variable system (jac) and compute all feedback loops::
 
 		#import the relevant packages 
-		import loopdetect
+		import loopdetect.core
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 		#compute the loop list
-		loop_list = loopdetect.find_loops(jac)
+		loop_list = loopdetect.core.find_loops(jac)
 	
 	"""
 	#only use sign of Jacobian
@@ -121,12 +121,12 @@ def find_loops_noscc(jacobian,max_num_loops=100000):
 	Define the Jacobian matrix of a four-variable system (jac) and compute all feedback loops::
 
 		#import the relevant packages 
-		import loopdetect
+		import loopdetect.core
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 		#compute the loop list
-		loop_list = loopdetect.find_loops_noscc(jac)
+		loop_list = loopdetect.core.find_loops_noscc(jac)
 	
 	"""
 	# wrapper for simple_cycles without detecting strongly connected components.
@@ -221,15 +221,17 @@ def find_loops_vset(fun,vset,*args,numdiff_method='central',max_num_loops=100000
 	Perform the loop analysis for a bacterial cell cycle system::
 
 		#import the relevant packages 
-		import loopdetect as ld
+		import loopdetect.core as ld
+		import loopdetect.examples as lde
 		import numpy as np
 		#Note: the example function from the script func_li08.py is loaded together
 		#with the other functions from loopdetect
 		#read in solutions from the data accompanying the package, file li08_solution.tsv
-		sols=ld.load_li08_sol()
+		sols=lde.load_li08_sol()
 		sols_as_tuples=[tuple(sols.iloc[i,1:20]) for i in range(len(sols))] #removing the time column
 		#we reduce the loop lists as much as possible
-		loop_results = ld.find_loops_vset(ld.func_li08,vset=sols_as_tuples,numdiff_method='central',
+		#attention: this might take a minute to run
+		loop_results = ld.find_loops_vset(lde.func_li08,vset=sols_as_tuples,numdiff_method='central',
 			max_num_loops=100000,compute_full_list=False,t=0)
 		loop_results['loop_rep']
 
@@ -241,7 +243,7 @@ def find_loops_vset(fun,vset,*args,numdiff_method='central',max_num_loops=100000
 		vset_def = [f for f in zip([1,1,2,2,3],[0,1,2,3,4],[2,2,2,2,2],[3,0,1,2,3])]
 		#we compute the loop lists at parameter values klin = [1,2,3,4,5,6,7,8] (in *args) 
 		#and knonlin=[2,2] (as **kwargs) using complex step derivatives
-		loop_results = ld.find_loops_vset(ld.func_POSm4_comp,vset_def,[1,2,3,4,5,6,7,8],
+		loop_results = ld.find_loops_vset(lde.func_POSm4_comp,vset_def,[1,2,3,4,5,6,7,8],
 			numdiff_method='complex',compute_full_list=True,knonlin=[2,2])
 		#please be aware that the function func_POSm4_comp defines complex values 
 		# (otherwise the Jacobian would be always zeros everywhere for numdiff_method='complex')
@@ -344,20 +346,20 @@ to encode the same nodes in the compared loops. Sets of indices are returned.
 Comparing loop lists from two systems of size 4 with coinciding nodes::
 
 	#import the relevant packages 
-	import loopdetect
+	import loopdetect.core
 	import numpy as np
 	#define the Jacobian matrix as numpy array
 	jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 	#compute the loop list
-	loop_list = loopdetect.find_loops(jac)
+	loop_list = loopdetect.core.find_loops(jac)
 	#define a slightly different Jacobian matrix
 	jac2 = np.array([[-1,0,0,0],[1,-1,0,-1],[0,1,1,0],[0,0,1,-1]])
 	#compute the loop list
-	loop_list2 = loopdetect.find_loops(jac2)
+	loop_list2 = loopdetect.core.find_loops(jac2)
 	#compare the loop lists
-	loop_compare = compare_loops(loop_list,loop_list2)
+	loop_compare = loopdetect.core.compare_loops(loop_list,loop_list2)
 	#get sublist of all loops that match
-	loop_list.iloc(loop_compare['ind_a_id'])
+	loop_list.loc[loop_compare['ind_a_id']]
 	#get only loops in first list that match exactly a loop in the second list
 	loop_list.loop[loop_compare['ind_a_id']]
 
@@ -418,14 +420,14 @@ def find_edge(loop_list,source_node,target_node):
 	Finding all loops with an edge between species 0 and 1::
 
 		#import the relevant packages 
-		import loopdetect
+		import loopdetect.core
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 		#compute the loop list
-		loop_list = loopdetect.find_loops_noscc(jac)
+		loop_list = loopdetect.core.find_loops_noscc(jac)
 		#find loops containing the edge [0,1]
-		first_edge = loopdetect.find_edge(loop_list,0,1)
+		first_edge = loopdetect.core.find_edge(loop_list,0,1)
 		#return the loops containing the edge
 		loop_list.iloc[first_edge]
 	"""
@@ -475,16 +477,16 @@ def sort_loop_index(loop_list):
     Create a new loop list with sorted entries (starting from the smalles node index).::
 
     	#import the relevant packages 
-		import loopdetect
+		import loopdetect.core
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 		#compute the loop list
-		loop_list = find_loops(jac)
+		loop_list = loopdetect.core.find_loops(jac)
 		#manipulate the second loop to start with a different entry than the smallest
-		loop_list.loop[1]=tuple([2,3,1,3])
+		loop_list.loop[1]=tuple([2,3,1,2])
 		#sort loop order
-		sorted_loop_list = loopdetect.sort_loop_index(loop_list)
+		sorted_loop_list = loopdetect.core.sort_loop_index(loop_list)
     """ 
 	sorted_loops = pd.DataFrame(zip([listin[list(listin).index(min(listin)):len(listin)]+
 		listin[1:list(listin).index(min(listin))+1] if len(listin)>2 
@@ -519,14 +521,14 @@ def loop_summary(loop_list,column_val='length'):
 	Summarize a short loop list.::
 
 		#import the relevant packages 
-		import loopdetect
+		import loopdetect.core
 		import numpy as np
 		#define the Jacobian matrix as numpy array
 		jac = np.array([[-1,0,0,-1],[1,-1,0,1],[0,1,-1,0],[0,0,1,-1]])
 		#compute the loop list
-		loop_list = loopdetect.find_loops_noscc(jac)
+		loop_list = loopdetect.core.find_loops_noscc(jac)
 		#determine summary
-		sum_tab = loop_summary(loop_list)
+		sum_tab = loopdetect.core.loop_summary(loop_list)
 	"""
 	def iseqm1(x):
 		#helper function, count how many negative loops (entry -1)

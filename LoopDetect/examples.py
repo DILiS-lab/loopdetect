@@ -153,13 +153,22 @@ def load_li08_sol():
             
             - time, y1=x0, y2=x1,..., y18=x17
 
-        All are numbers. Time is given in minutes.
+        All are numbers. Time is given in minutes. No input argument required.
 
     :Reference:
 
         Li S, Brazhnik P, Sobral B, Tyson JJ. A Quantitative Study of the 
         Division Cycle of Caulobacter crescentus Stalked Cells. Plos Comput Biol. 
         2008;4(1):e9.
+
+    :Example:
+        
+    Load the content into a variable::
+        
+        #import the package
+        import loopdetect.examples 
+        #load the data
+        sol_vec = loopdetect.examples.load_li08_sol()
 
     """
     stream = pkg_resources.resource_stream('loopdetect', 'data/li08_solution.tsv')
