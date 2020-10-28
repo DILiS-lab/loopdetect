@@ -12,7 +12,7 @@ README = (HERE / "README.md").read_text()
 
 
 setuptools.setup(
-    name='loopdetect01',
+    name='loopdetect',
     version='0.1.0',    
     description='A Python package for feedback loop detection in ODE models',
     url='https://gitlab.com/kabaum/loopdetect', 

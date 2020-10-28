@@ -37,7 +37,7 @@ In addition, LoopDetect can be found on [GitLab](https://gitlab.com/kabaum/loopd
 
 ## Workflow and documentation
 
-Function documentation is available at PyPI or on the LoopDetect pages, https://kabaum.gitlab.io/loopdetect/. There, you can also find a detailed [workflow description](https://kabaum.gitlab.io/loopdetect/workflow.html).
+Function documentation is available on the LoopDetect pages, https://kabaum.gitlab.io/loopdetect/. There, you can also find a detailed [workflow description](https://kabaum.gitlab.io/loopdetect/workflow.html).
 
 
 ## Licensing
