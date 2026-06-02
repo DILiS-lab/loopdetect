@@ -206,14 +206,12 @@ def func_POSm4(x,klin,knonlin):
         2016;12(12):e1005298.
     '''
     fb = 1 + (x[3] / knonlin[0])**knonlin[1]
-    dx = np.zeros(4)
+    dx = np.zeros(4, dtype=x.dtype)
     dx[0] = klin[0] - klin[1] * x[0] * fb - klin[2] * x[0]
     dx[1] = klin[1] * x[0] * fb - klin[3] * x[1] - klin[4] * x[1]
     dx[2] = klin[3] * x[1] - klin[5] * x[2] - klin[6] * x[2]
     dx[3] = klin[5] * x[2] - klin[7] * x[3]
     return dx
-
-
 
 def func_POSm4_comp(x,klin,knonlin):
     '''
@@ -250,12 +248,12 @@ def func_POSm4_comp(x,klin,knonlin):
         2016;12(12):e1005298.
     '''
     fb = 1 + (x[3] / knonlin[0])**knonlin[1]
-    dx = np.zeros(4)
+    dx = np.zeros(4, dtype=x.dtype)
     dx[0] = klin[0] - klin[1] * x[0] * fb - klin[2] * x[0]
     dx[1] = klin[1] * x[0] * fb - klin[3] * x[1] - klin[4] * x[1]
     dx[2] = klin[3] * x[1] - klin[5] * x[2] - klin[6] * x[2]
     dx[3] = klin[5] * x[2] - klin[7] * x[3]
-    return dx.astype(complex)
+    return dx
 
 def func_complex_formation(y, params):
     A, B, AB = y
@@ -264,7 +262,7 @@ def func_complex_formation(y, params):
     dBdt = -k1 * A * B + k2 * AB
     dABdt = k1 * A * B - k2 * AB
     
-    return np.array([dAdt, dBdt, dABdt], dtype=float)
+    return np.array([dAdt, dBdt, dABdt])
 
 
 def markevich04(y, params):
@@ -282,16 +280,13 @@ def markevich04(y, params):
         Markevich NI, Hoek JB, Kholodenko BN: Signaling switches and bistability arising from multisite phosphorylation in protein kinase cascades. J Cell Biol. 2004;164(3):353-359.
         Varusai TM, Kolch W, Kholodenko BN, Nguyen LK: Protein-protein interactions generate hidden feedback and feed-forward loops to trigger bistable switches, oscillations and biphasic dose-responses. Mol BioSyst. 2015;11(10):2750-2762.
     '''
-    A = y[0]
-    B = y[1]
-    AB = y[2]
-    B_star = y[3]
+    A, B, AB, B_star = np.asarray(y)
     k1, k2, k3, k4, kn1, kn2, kn3 = params
     dAdt = -k1 * A * B + k2 * AB
     dBdt = -k1 * A * B + k2 * AB + k3 * A * (B_star / (B_star + kn1)) - k4 * kn3 * (B / (B + kn2))
     dABdt = k1 * A * B - k2 * AB
     dB_stardt = -k3 * A * (B_star / (B_star + kn1)) + k4 * kn3 * (B / (B + kn2))
-    return np.array([dAdt, dBdt, dABdt, dB_stardt], dtype=float)
+    return np.array([dAdt, dBdt, dABdt, dB_stardt])
 
 def func_huang96_mapk(y, k):
     '''
@@ -308,7 +303,7 @@ def func_huang96_mapk(y, k):
     '''
     S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, \
     S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, \
-    S21, S22 = y
+    S21, S22 = np.asarray(y)
 
     k1, k2, k3, k4, k5, k6, k7, k8, k9, k10, \
     k11, k12, k13, k14, k15, k16, k17, k18, k19, k20, \
@@ -359,7 +354,7 @@ def func_huang96_mapk(y, k):
         dS1, dS2, dS3, dS4, dS5, dS6, dS7, dS8, dS9, dS10,
         dS11, dS12, dS13, dS14, dS15, dS16, dS17, dS18,
         dS19, dS20, dS21, dS22
-    ], dtype=float)
+    ])
 
 def func_kho00(y, klin, kn, n1):
     '''example function: complex formation with positive feedback regulation as from Khoo et al., 2000
@@ -382,7 +377,7 @@ def func_kho00(y, klin, kn, n1):
         Khoo MS, McCluskey A, McCluskey S, Houslay MD, Baillie GS: Oscillating cyclic AMP levels in cells are regulated by phosphodiesterases and modulated by their phosphorylation status. J Biol Chem. 2000;275(44):33899-33904.
     '''
 
-    S1, S2, S3, S4, S5, S6, S7, S8 = y
+    S1, S2, S3, S4, S5, S6, S7, S8 = np.asarray(y)
     
     # Unpack kinetic parameters
     k1, k2, k3, k4, k5, k6, k7, k8, k9, k10 = klin
@@ -427,7 +422,7 @@ def func_kho00(y, klin, kn, n1):
     dS8 =  k8 * (S5*S7/(kn9 + S7)) \
            - k9 * (S8/(kn10 + S8))
     
-    return np.array([dS1, dS2, dS3, dS4, dS5, dS6, dS7, dS8], dtype=float)
+    return np.array([dS1, dS2, dS3, dS4, dS5, dS6, dS7, dS8])
 
 def func_kho00_nofb(y, klin, kn, n1):
     '''example function: complex formation without feedback regulation as from Khoo et al., 2000
@@ -445,7 +440,7 @@ def func_kho00_nofb(y, klin, kn, n1):
         Khoo MS, McCluskey A, McCluskey S, Houslay MD, Baillie GS: Oscillating cyclic AMP levels in cells are regulated by phosphodiesterases and modulated by their phosphorylation status. J Biol Chem. 2000;275(44):33899-33904.
     '''
     
-    S1, S2, S3, S4, S5, S6, S7, S8 = y
+    S1, S2, S3, S4, S5, S6, S7, S8 = np.asarray(y)
     
     # Unpack kinetic parameters
     k1, k2, k3, k4, k5, k6, k7, k8, k9, k10 = klin
@@ -490,7 +485,7 @@ def func_kho00_nofb(y, klin, kn, n1):
     dS8 =  k8 * (S5*S7/(kn9 + S7)) \
            - k9 * (S8/(kn10 + S8))
     
-    return np.array([dS1, dS2, dS3, dS4, dS5, dS6, dS7, dS8], dtype=float)
+    return np.array([dS1, dS2, dS3, dS4, dS5, dS6, dS7, dS8])
 
 def func_gold90(y, klin, kn, n):
     '''
@@ -509,7 +504,7 @@ def func_gold90(y, klin, kn, n):
     :Reference: 
         Goldbeter, A. (1990). A model for circadian rhythms based on the dynamics of calcium oscillations in the cytosol. Proceedings of the National Academy of Sciences, 87(19), 7264-7268.
     '''
-    S1, S2 = y
+    S1, S2 = np.asarray(y)
     k1, k2, k3, k4, k5, k6 = klin
     kn1, kn2, kn3 = kn
     n1, n2, n3 = n
@@ -542,7 +537,7 @@ def func_elo00(y, klin, knonlin):
     :Reference:
         Elowitz MB, Leibler S: A synthetic oscillatory network of transcriptional regulators. Nature. 2000;403(6767):335-338.
     '''
-    LacI, TetR, lambda_cl, LacI_mRNA, TetR_mRNA, lambda_cl_mRNA = y
+    LacI, TetR, lambda_cl, LacI_mRNA, TetR_mRNA, lambda_cl_mRNA = np.asarray(y)
     k1, k2, k3, k4, k5, k6, k7, k8, k9, k10, k11, k12, k13, k14, k15 = klin
     kn1, kn2, kn3, kn4, kn5, kn6 = knonlin
 
