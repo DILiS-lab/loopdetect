@@ -10,10 +10,15 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
+
 import sys
+from pathlib import Path
+
 #sys.path.insert(0, os.path.abspath(''))
-sys.path.append('/Users/kabaum/Desktop/FBLDetect/LoopDetect/LoopDetect')
+# sys.path.append('/Users/kabaum/Desktop/FBLDetect/LoopDetect/LoopDetect')
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src")) 
+# Change repo to modern layout as recommended by PyPA, see
+# https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/
 
 # -- Project information -----------------------------------------------------
 
@@ -22,7 +27,7 @@ copyright = '2020, Katharina Baum'
 author = 'Katharina Baum'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.0'
+release = '0.1.1'
 
 
 # -- General configuration ---------------------------------------------------
