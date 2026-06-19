@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "loopdetect"
+version = "0.2.0"
+description = "Comprehensive detection of feedback loops in ordinary differential equation models"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+
+authors = [
+    { name = "Katharina Baum" },
+    { name = "DILiS Lab" }
+]
+
+maintainers = [
+    { name = "DILiS Lab" }
+]
+
+dependencies = [
+    "numpy",
+    "pandas",
+    "networkx",
+    "numdifftools",
+]
+
+keywords = [
+    "feedback loops",
+    "ODE models",
+    "ordinary differential equations",
+    "systems biology",
+    "network analysis",
+    "Jacobian",
+    "complex systems"
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/DILiS-lab/loopdetect"
+Repository = "https://github.com/DILiS-lab/loopdetect"
+Documentation = "https://dilis-lab.github.io/loopdetect/online_docs/"
+Issues = "https://github.com/DILiS-lab/loopdetect/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+loopdetect = ["data/*.tsv"]

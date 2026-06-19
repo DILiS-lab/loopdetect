@@ -1,0 +1,13 @@
+name: loopdetect-test
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9,<3.13
+  - pip
+  - numpy
+  - pandas
+  - networkx
+  - numdifftools
+  - pytest
+  - pip:
+      - -e .

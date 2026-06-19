@@ -15,6 +15,7 @@ public/
 build/
 !docs/build
 test_ld.py
+.pytest_cache/
 
 # Compiled source #
 ###################
@@ -26,6 +27,10 @@ test_ld.py
 *.so
 *.pyc
 __pycache__
+
+dist/
+build/
+*.egg-info/
 
 # Packages #
 ############
@@ -58,3 +63,13 @@ Thumbs.db
 .Rproj.user
 doc
 Meta
+
+# Virtual/Conda environments
+.venv/
+venv/
+env/
+
+
+# Old back up #
+######################
+old/
