@@ -49,7 +49,9 @@ import loopdetect.core
 # examples
 import loopdetect.examples
 ```
-LoopDetect is tested for Python 3, especially with Python version 3.12, but could also run with older Python versions.
+LoopDetect v0.2.0 is tested for Python 3, especially with Python version 3.12 and can work with Python version >=3.10. 
+To run with older Python versions, you can use LoopDetect v0.1.0
+Currently testing with Python 3.13 and 3.14 (will test in 3.15 after the beta phase)
 
 In addition, old version LoopDetect can be found on [GitLab](https://gitlab.com/kabaum/loopdetect).
 
