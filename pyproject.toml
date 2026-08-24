@@ -16,7 +16,8 @@ authors = [
 ]
 
 maintainers = [
-    { name = "DILiS Lab" }
+    { name = "DILiS Lab" },
+    { name = "Hang Mai Anh Vo" }
 ]
 
 dependencies = [

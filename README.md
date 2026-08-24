@@ -1,7 +1,5 @@
 # LoopDetect - comprehensive detection of feedback loops in ODE models
 
-LoopDetect is available in three language implementations:
-
 <p align="center">
   <a href="https://github.com/DILiS-lab/loopdetect">
     <img src="https://img.shields.io/badge/Python-implementation-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python implementation">
@@ -49,9 +47,10 @@ import loopdetect.core
 # examples
 import loopdetect.examples
 ```
-LoopDetect v0.2.0 is tested for Python 3, especially with Python version 3.12 and can work with Python version >=3.10. 
-To run with older Python versions, you can use LoopDetect v0.1.0
-Currently testing with Python 3.13 and 3.14 (will test in 3.15 after the beta phase)
+
+LoopDetect v0.2.0 requires Python 3.10 or newer. The package is tested with Python 3.10, 3.11, 3.12, 3.13, and 3.14.
+We will test with Python 3.15 after it passes the beta phase.
+Users who need compatibility with older Python versions should use LoopDetect v0.1.0.
 
 In addition, old version LoopDetect can be found on [GitLab](https://gitlab.com/kabaum/loopdetect).
 

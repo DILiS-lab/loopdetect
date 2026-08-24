@@ -27,6 +27,7 @@ All notable changes to LoopDetect will be documented in this file.
 * Added `CHANGELOG.md` to track release history.
 * Added optional test structure under `tests/` for package import checks, core-function checks, and package-data checks.
 * Added development/testing environment guidance for creating a clean Conda environment.
+* Added Github Actions to automatize test and release new version onto PyPI
 
 ### Preserved
 
